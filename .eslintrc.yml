@@ -1,0 +1,44 @@
+---
+root: true
+env:
+  es6: true
+  browser: true
+  node: true
+extends:
+  - airbnb-base
+  - plugin:@typescript-eslint/recommended
+  - plugin:vue/recommended
+parser: vue-eslint-parser
+parserOptions:
+  parser: "@typescript-eslint/parser"
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+rules:
+  # eslint
+  no-console: warn # デバッグするときにうるさいから警告
+  # @typescript-eslint
+  "@typescript-eslint/class-name-casing": error # クラス名をパスカルケースに強制
+  "@typescript-eslint/interface-name-prefix": "off" # インターフェースのプレフィックスを制限しない
+  "@typescript-eslint/no-inferrable-types": error # 型推論可能な場合は型を書かない
+  "@typescript-eslint/explicit-function-return-type": # 関数の戻り値を明示する
+    - error
+    - allowExpressions: true # コールバックでは許容する
+  # vue-eslint-parser
+  vue/html-closing-bracket-spacing: # />の前にスペースを強制
+    - error
+    - selfClosingTag: always
+  vue/attributes-order:
+    - warn
+    - order:
+        - DEFINITION
+        - LIST_RENDERING
+        - CONDITIONALS
+        - RENDER_MODIFIERS
+        - GLOBAL
+        - UNIQUE
+        - TWO_WAY_BINDING
+        - OTHER_DIRECTIVES
+        - OTHER_ATTR
+        - EVENTS
+        - CONTENT
