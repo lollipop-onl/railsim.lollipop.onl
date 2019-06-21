@@ -1,0 +1,36 @@
+{
+  "name": "railsim.lollipop.onl",
+  "version": "0.0.1",
+  "description": "RailSim Plugin Store",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt dev",
+    "lint": "eslint --ext .ts,.vue ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/lollipop.onl/railsim.lollipop.onl.git"
+  },
+  "author": "lollipop.onl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/lollipop.onl/railsim.lollipop.onl/issues"
+  },
+  "homepage": "https://gitlab.com/lollipop.onl/railsim.lollipop.onl#readme",
+  "dependencies": {
+    "@lollipop-onl/vuex-typesafe-helper": "^0.2.6",
+    "firebase": "^6.2.0",
+    "node-sass": "^4.12.0",
+    "nuxt": "^2.8.1",
+    "nuxt-property-decorator": "^2.3.0",
+    "ts-node": "^8.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/typescript": "^2.8.1",
+    "@nuxtjs/style-resources": "^0.1.2",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2"
+  }
+}
