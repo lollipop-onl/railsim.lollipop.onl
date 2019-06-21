@@ -14,6 +14,7 @@ parserOptions:
   sourceType: module
 plugins:
   - "@typescript-eslint"
+  - import
 rules:
   # eslint
   no-console: warn # デバッグするときにうるさいから警告
@@ -24,6 +25,10 @@ rules:
   "@typescript-eslint/explicit-function-return-type": # 関数の戻り値を明示する
     - error
     - allowExpressions: true # コールバックでは許容する
+  "@typescript-eslint/indent": [error, 2] # インデントサイズを固定
+  # eslint-plugin-import
+  import/no-unresolved: "off"
+  import/no-extraneous-dependencies: "off"
   # vue-eslint-parser
   vue/html-closing-bracket-spacing: # />の前にスペースを強制
     - error
