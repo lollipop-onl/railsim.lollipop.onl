@@ -1,3 +1,6 @@
+import NuxtConfiguration from '@nuxt/config';
+import path from 'path';
+
 export default {
   build: {
     hardSource: true,
@@ -15,10 +18,13 @@ export default {
     title: 'RailSim Plugin Store'
   },
   extensions: ['js', 'ts'],
-  module: ['@nuxtjs/style-resources'],
+  mode: 'spa',
+  modules: ['@nuxtjs/style-resources'],
   router: {},
   srcDir: 'src/',
   styleResources: {
-    sass: []
+    sass: [
+      '~assets/styles/vars/*.sass'
+    ]
   }
-};
+} as NuxtConfiguration;
