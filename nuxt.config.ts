@@ -1,21 +1,20 @@
 import NuxtConfiguration from '@nuxt/config';
-import path from 'path';
 
-export default {
+const config: NuxtConfiguration = {
   build: {
     hardSource: true,
     typescript: {
-      typeCheck: true
-    }
+      typeCheck: true,
+    },
   },
   css: ['reset.css'],
   env: {},
   head: {
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
-    title: 'RailSim Plugin Store'
+    title: 'RailSim Plugin Store',
   },
   extensions: ['js', 'ts'],
   mode: 'spa',
@@ -24,7 +23,9 @@ export default {
   srcDir: 'src/',
   styleResources: {
     sass: [
-      '~assets/styles/vars/*.sass'
-    ]
-  }
-} as NuxtConfiguration;
+      '~assets/styles/vars/*.sass',
+    ],
+  },
+};
+
+export default config;
