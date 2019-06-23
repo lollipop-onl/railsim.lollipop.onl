@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import { stringifySearchQuery } from '@/utils';
 
 @Component
 export default class AppPluginTag extends Vue {
@@ -34,9 +33,11 @@ export default class AppPluginTag extends Vue {
 
   /** リンク */
   get link() {
-    const query = stringifySearchQuery({ category: [this.categoryId] });
+    if (this.categoryId) {
+      return `/category/${this.categoryId}`;
+    }
 
-    return `/search/result?${query}`;
+    return '/search/result';
   }
 }
 </script>

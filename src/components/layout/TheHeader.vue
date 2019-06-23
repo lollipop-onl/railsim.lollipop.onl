@@ -21,12 +21,14 @@
         >
         <i class="icon ion-md-arrow-dropdown" />
       </button>
-      <TheHeaderMenu
-        v-show="isOpenMenu"
-        v-outside="closeMenu"
-        class="menu"
-        @navigate="closeMenu"
-      />
+      <transition name="avatarMenu">
+        <TheHeaderMenu
+          v-show="isOpenMenu"
+          v-outside="closeMenu"
+          class="menu"
+          @navigate="closeMenu"
+        />
+      </transition>
     </div>
   </header>
 </template>
@@ -105,4 +107,15 @@ export default class TheHeader extends Vue {
     right: 0
     z-index: 1
     min-width: 160px
+
+.avatarMenu-enter-active,
+.avatarMenu-leave-active
+  &
+    transition: opacity 0.12s $ease-out-quint, transform 0.12s $ease-out-quint
+
+.avatarMenu-enter,
+.avatarMenu-leave-to
+  &
+    opacity: 0
+    transform: translate3d(0, $layout-margin-sm, 0)
 </style>

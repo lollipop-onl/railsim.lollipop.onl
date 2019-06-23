@@ -32,17 +32,18 @@ export const parseSearchQuery = (query: VueRouterQuery): Required<ISearchQuery> 
 export const stringifySearchQuery = (query: ISearchQuery): string => {
   const { keyword = '', category = [], tag = [] } = query;
   const searchQuery = [];
+  const stringifyArray = (arr: any[]): string => arr.filter(Boolean).sort((a, b) => a - b).join(',');
 
   if (keyword) {
     searchQuery.push(['keyword', keyword]);
   }
 
   if (category) {
-    searchQuery.push(['category', category.join(',')]);
+    searchQuery.push(['category', stringifyArray(category)]);
   }
 
   if (tag.length > 0) {
-    searchQuery.push(['tag', tag.join(',')]);
+    searchQuery.push(['tag', stringifyArray(tag)]);
   }
 
   return searchQuery.map(q => q.join('=')).join('&');
