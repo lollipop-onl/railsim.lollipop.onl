@@ -43,7 +43,7 @@ export default class TheSidebarSearch extends Vue {
   }
 
   /** 入力が送信されたことを通知 */
-  @Emit() submit(value: string) { return value; }
+  @Emit() submit() { return this.value; }
 }
 </script>
 

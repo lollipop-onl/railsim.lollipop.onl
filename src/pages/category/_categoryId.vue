@@ -1,36 +1,31 @@
 <template>
   <div class="search-result-page">
-    <div class="search-header">
+    <div
+      v-if="category"
+      class="search-header"
+    >
       <div class="label">
-        検索結果
+        カテゴリ
       </div>
       <n-link
         :to="`/search?${query}`"
         class="word"
       >
-        {{ searchQuery.keyword || 'すべてのプラグイン' }}
+        {{ category.name || 'すべてのプラグイン' }}
         <i class="icon ion-ios-options" />
       </n-link>
-    </div>
-    <div class="tags">
-      <template v-for="categoryId in searchQuery.category">
-        <AppPluginTag
-          :key="categoryId"
-          :category-id="categoryId"
-        />
-      </template>
-      <AppPluginTag>港湾</AppPluginTag>
-      <AppPluginTag>ガントリークレーン</AppPluginTag>
     </div>
     <AppPluginList />
   </div>
 </template>
 
 <script lang="ts">
+import { Context } from '@nuxt/vue-app';
 import { Component, Vue } from 'nuxt-property-decorator';
 import AppPluginList from '@/components/ui/AppPluginList.vue';
 import AppPluginTag from '@/components/ui/AppPluginTag.vue';
-import { parseSearchQuery, stringifySearchQuery } from '@/utils';
+import * as C from '@/constants';
+import { stringifySearchQuery } from '@/utils';
 
 @Component({
   components: {
@@ -38,24 +33,34 @@ import { parseSearchQuery, stringifySearchQuery } from '@/utils';
     AppPluginTag,
   },
   watchQuery: true,
-  layoutProps(this: SearchResultPage) {
+  layoutProps(this: CategoryPage) {
     return {
       breadcrumbs: [
-        { title: 'プラグイン検索', to: '/search' },
-        { title: '検索結果' },
+        { title: `カテゴリ：${this.category ? this.category.name : ''}` },
       ],
     };
   },
 })
-export default class SearchResultPage extends Vue {
-  /** 検索クエリ */
-  get searchQuery() {
-    return parseSearchQuery(this.$route.query);
-  }
-
+export default class CategoryPage extends Vue {
   /** クエリ */
   get query() {
-    return stringifySearchQuery(this.searchQuery);
+    const { categoryId } = this.$route.params;
+
+    return stringifySearchQuery({ category: [categoryId] });
+  }
+
+  /** カテゴリ */
+  get category() {
+    const { categoryId } = this.$route.params;
+
+    return this.$C.PLUGIN_CATEGORY.find(({ id }) => categoryId === id);
+  }
+
+  /** Lifecycle */
+  validate({ route }: Context): boolean {
+    const { categoryId } = route.params;
+
+    return C.PLUGIN_CATEGORY.some(({ id }) => categoryId === id);
   }
 }
 </script>

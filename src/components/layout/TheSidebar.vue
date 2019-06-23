@@ -4,6 +4,7 @@
       <TheSidebarSearch
         v-model="searchWord"
         placeholder="ストアを検索"
+        @submit="searchKeyword"
       />
     </div>
     <TheSidebarCategoryList />
@@ -42,6 +43,15 @@ import TheSidebarNav from '@/components/layout/TheSidebarNav.vue';
 export default class TheSidebar extends Vue {
   /** 検索ワード */
   searchWord = '';
+
+  /**
+   * キーワード検索を実行する
+   */
+  searchKeyword(keyword: string): void {
+    if (!keyword) return;
+
+    this.$router.push(`/search/result?keyword=${keyword}`);
+  }
 }
 </script>
 

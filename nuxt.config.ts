@@ -1,4 +1,5 @@
 import NuxtConfiguration from '@nuxt/config';
+import * as C from './src/constants';
 
 const config: NuxtConfiguration = {
   build: {
@@ -25,6 +26,7 @@ const config: NuxtConfiguration = {
   mode: 'spa',
   modules: ['@nuxtjs/style-resources'],
   plugins: [
+    '~/plugins/constants',
     '~/plugins/router-util/register',
   ],
   router: {

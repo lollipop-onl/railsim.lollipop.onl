@@ -1,60 +1,21 @@
 <template>
   <ul class="category-list">
-    <li class="item">
-      <n-link
-        class="category-item"
-        to="#"
+    <template v-for="({ id, name }) in $C.PLUGIN_CATEGORY">
+      <li
+        :key="id"
+        class="item"
       >
-        <i class="icon ion-ios-train" />
-        <div class="name">
-          架線柱プラグイン
-        </div>
-      </n-link>
-    </li>
-    <li class="item">
-      <n-link
-        class="category-item"
-        to="#"
-      >
-        <i class="icon ion-ios-train" />
-        <div class="name">
-          架線プラグイン
-        </div>
-      </n-link>
-    </li>
-    <li class="item">
-      <n-link
-        class="category-item"
-        to="#"
-      >
-        <i class="icon ion-ios-train" />
-        <div class="name">
-          車輌プラグイン
-        </div>
-      </n-link>
-    </li>
-    <li class="item">
-      <n-link
-        class="category-item"
-        to="/"
-      >
-        <i class="icon ion-ios-train" />
-        <div class="name">
-          施設プラグイン
-        </div>
-      </n-link>
-    </li>
-    <li class="item">
-      <n-link
-        class="category-item"
-        to="#"
-      >
-        <i class="icon ion-ios-train" />
-        <div class="name">
-          スキンプラグイン
-        </div>
-      </n-link>
-    </li>
+        <n-link
+          class="category-item"
+          :to="`/category/${id}`"
+        >
+          <i class="icon ion-ios-train" />
+          <div class="name">
+            {{ name }}プラグイン
+          </div>
+        </n-link>
+      </li>
+    </template>
   </ul>
 </template>
 

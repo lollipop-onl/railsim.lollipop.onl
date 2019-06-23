@@ -3,11 +3,15 @@
     v-bind="$attrs"
     :type="type"
     :class="{ 'form-input': true, '-block': block }"
+    :value="value"
+    v-on="listeners"
   >
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import {
+  Component, Model, Prop, Vue,
+} from 'nuxt-property-decorator';
 
 @Component
 export default class AppFormInput extends Vue {
@@ -16,6 +20,22 @@ export default class AppFormInput extends Vue {
 
   /** ブロックスタイルにするか */
   @Prop({ type: Boolean, default: false }) block: boolean;
+
+  /** 入力値 */
+  @Model('input', { type: String, required: true })
+  value: string;
+
+  /** Event Listeners */
+  get listeners() {
+    return {
+      ...this.$listeners,
+      input: (e: Event) => {
+        if (!(e.target instanceof HTMLInputElement)) return;
+
+        this.$emit('input', e.target.value);
+      },
+    };
+  }
 }
 </script>
 

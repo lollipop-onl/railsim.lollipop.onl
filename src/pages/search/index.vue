@@ -1,55 +1,65 @@
 <template>
   <div>
     <AppHeading>プラグイン検索</AppHeading>
-    <form>
+    <form @submit.prevent="onSubmit">
       <AppForm>
         <AppFormRow title="キーワード">
           <AppFormInput
+            v-model="keyword"
             block
             placeholder="検索キーワード"
           />
         </AppFormRow>
-        <AppFormRow title="カテゴリ">
+        <AppFormRow
+          title="カテゴリ"
+          wrapper="div"
+        >
           <div class="search-tags">
-            <AppPluginTag category>
-              架線柱
-            </AppPluginTag>
-            <AppPluginTag category>
-              架線
-            </AppPluginTag>
-            <AppPluginTag category>
-              橋梁
-            </AppPluginTag>
-            <AppPluginTag category>
-              橋桁
-            </AppPluginTag>
-            <AppPluginTag category>
-              車輌
-            </AppPluginTag>
-            <AppPluginTag category>
-              施設
-            </AppPluginTag>
-            <AppPluginTag category>
-              駅舎
-            </AppPluginTag>
-            <AppPluginTag category>
-              地形
-            </AppPluginTag>
-            <AppPluginTag category>
-              環境
-            </AppPluginTag>
-            <AppPluginTag category>
-              スキン
-            </AppPluginTag>
+            <template v-for="({ id }) in $C.PLUGIN_CATEGORY">
+              <AppPluginTag
+                :key="id"
+                :category-id="id"
+                :inactive="!selectedCategory.includes(id)"
+                button
+                @click="toggleCategory(id)"
+              />
+            </template>
           </div>
         </AppFormRow>
-        <AppFormRow title="タグ">
+        <AppFormRow
+          title="タグ"
+          wrapper="div"
+        >
           <div class="search-tags">
-            <AppPluginTag>船舶</AppPluginTag>
-            <AppPluginTag>港湾</AppPluginTag>
-            <AppPluginTag>JR東海</AppPluginTag>
-            <AppPluginTag>JR北海道</AppPluginTag>
-            <AppPluginTag>EF65 PF</AppPluginTag>
+            <AppPluginTag
+              button
+              inactive
+            >
+              船舶
+            </AppPluginTag>
+            <AppPluginTag
+              button
+            >
+              港湾
+            </AppPluginTag>
+            <AppPluginTag
+              button
+              inactive
+            >
+              JR東海
+            </AppPluginTag>
+            <AppPluginTag
+              button
+              inactive
+            >
+              JR北海道
+            </AppPluginTag>
+            <AppPluginTag
+              button
+              inactive
+            >
+              EF65 PF
+            </AppPluginTag>
           </div>
         </AppFormRow>
         <button
@@ -70,6 +80,7 @@ import AppPluginTag from '@/components/ui/AppPluginTag.vue';
 import AppForm from '@/components/ui/AppForm.vue';
 import AppFormRow from '@/components/ui/AppFormRow.vue';
 import AppFormInput from '@/components/ui/AppFormInput.vue';
+import { arrayify, parseSearchQuery, stringifySearchQuery } from '@/utils';
 
 @Component({
   components: {
@@ -88,6 +99,44 @@ import AppFormInput from '@/components/ui/AppFormInput.vue';
   },
 })
 export default class SearchPage extends Vue {
+  /** 検索キーワード */
+  keyword = '';
+
+  /** カテゴリ */
+  selectedCategory: string[] = [];
+
+  /** Lifecycle */
+  mounted(): void {
+    const { keyword, category } = parseSearchQuery(this.$route.query);
+
+    this.keyword = arrayify(keyword)[0] || '';
+    this.selectedCategory = category;
+  }
+
+  /**
+   * カテゴリの選択状態をトグルする
+   */
+  toggleCategory(categoryId: string): void {
+    const index = this.selectedCategory.indexOf(categoryId);
+
+    if (index >= 0) {
+      this.selectedCategory.splice(index, 1);
+    } else {
+      this.selectedCategory.push(categoryId);
+    }
+  }
+
+  /**
+   * 検索を実行する
+   */
+  onSubmit(): void {
+    const query = stringifySearchQuery({
+      keyword: this.keyword,
+      category: this.selectedCategory,
+    });
+
+    this.$router.push(`/search/result?${query}`);
+  }
 }
 </script>
 

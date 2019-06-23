@@ -1,8 +1,15 @@
 <template>
-  <label class="app-form-row">
-    <div class="label">{{ title }}</div>
-    <div class="content"><slot /></div>
-  </label>
+  <div
+    :is="wrapper"
+    class="app-form-row"
+  >
+    <div class="label">
+      {{ title }}
+    </div>
+    <div class="content">
+      <slot />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,6 +19,9 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 export default class AppFormRow extends Vue {
   /** フィールドタイトル */
   @Prop({ type: String, required: true }) title: string;
+
+  /** ラッパータグ */
+  @Prop({ type: String, default: 'label' }) wrapper: string;
 }
 </script>
 
