@@ -1,6 +1,6 @@
 <template>
   <n-link
-    :class="{ 'app-plugin-tag': true, '-category': category }"
+    :class="{ 'app-plugin-tag': true, '-category': category, '-inactive': inactive }"
     to="#"
   >
     <slot />
@@ -14,6 +14,9 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 export default class AppPluginTag extends Vue {
   /** カテゴリかどうか */
   @Prop({ type: Boolean, default: false }) category: boolean;
+
+  /** 非活性かどうか */
+  @Prop({ type: Boolean, default: false }) inactive: boolean;
 }
 </script>
 
@@ -49,6 +52,9 @@ export default class AppPluginTag extends Vue {
     content: ''
     font-family: Ionicons
 
-  &:hover
+  &.-inactive
+    opacity: $_light-md
+
+  &:not(.-inactive):hover
     opacity: $_light-md
 </style>
