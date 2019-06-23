@@ -32,6 +32,16 @@
   &:disabled
     cursor: default
 
+  +button-theme(primary)
+    color: $_white
+    background: $_primary
+
+  +button-theme-hover(primary)
+    opacity: $_light-sm
+
+  +button-theme-disabled(primary)
+    opacity: $_light-md
+
   +button-theme(outline)
     color: $_primary
     border: 1px solid rgba($_primary, $_light-lg)
