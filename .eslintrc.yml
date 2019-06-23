@@ -18,6 +18,7 @@ plugins:
 rules:
   # eslint
   no-console: warn # デバッグするときにうるさいから警告
+  class-methods-use-this: "off" # 無理ゲーなので無効化
   # @typescript-eslint
   "@typescript-eslint/class-name-casing": error # クラス名をパスカルケースに強制
   "@typescript-eslint/interface-name-prefix": "off" # インターフェースのプレフィックスを制限しない

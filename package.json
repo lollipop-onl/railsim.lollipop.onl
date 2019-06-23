@@ -25,6 +25,7 @@
   "dependencies": {
     "@lollipop-onl/vuex-typesafe-helper": "^0.2.6",
     "firebase": "^6.2.0",
+    "helpful-decorators": "^2.0.4",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",
     "nuxt": "^2.8.1",

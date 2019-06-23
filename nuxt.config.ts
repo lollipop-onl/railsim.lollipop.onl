@@ -24,8 +24,10 @@ const config: NuxtConfiguration = {
   styleResources: {
     sass: [
       '~assets/styles/vars/*.sass',
+      '~assets/styles/mixins/*.sass',
     ],
   },
+  watch: ['~assets/styles/**/*.sass'],
 };
 
 export default config;
