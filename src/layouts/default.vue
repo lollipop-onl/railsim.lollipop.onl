@@ -6,6 +6,9 @@
         <TheSidebar />
       </aside>
       <main class="main">
+        <div class="breadcrumbs-nav">
+          <TheBreadcrumbs />
+        </div>
         <nuxt />
       </main>
     </div>
@@ -19,6 +22,7 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import TheHeader from '@/components/layout/TheHeader.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
+import TheBreadcrumbs from '@/components/layout/TheBreadcrumbs.vue';
 import TheFooter from '@/components/layout/TheFooter.vue';
 import PageInitializerMixin from '@/mixins/PageInitializerMixin';
 
@@ -26,6 +30,7 @@ import PageInitializerMixin from '@/mixins/PageInitializerMixin';
   components: {
     TheHeader,
     TheSidebar,
+    TheBreadcrumbs,
     TheFooter,
   },
   mixins: [PageInitializerMixin],
@@ -53,8 +58,14 @@ export default class DefaultLayout extends Vue {
 
   & > .container > .main
     flex-grow: 1
+    min-width: 0
+    padding-top: $layout-margin-sm
 
   & > .footer
     padding-top: $layout-margin-xlg
     margin-top: auto
+
+.breadcrumbs-nav
+  &
+    margin-bottom: 30px
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <img
-      src="~assets/images/common/logo.svg"
+      src="~assets/images/common/logo-lg.svg"
       style="height: 18px"
     >
     <h1>Hello World</h1>
