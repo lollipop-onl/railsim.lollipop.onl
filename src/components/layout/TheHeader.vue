@@ -10,16 +10,57 @@
         alt="RailSimPluginStore"
       >
     </n-link>
+    <div class="header-avatar">
+      <button
+        :class="{'avatar': true, '-open': isOpenMenu}"
+        @click="openMenu"
+      >
+        <img
+          src="~assets/images/dev/avatar.png"
+          class="image"
+        >
+        <i class="icon ion-md-arrow-dropdown" />
+      </button>
+      <TheHeaderMenu
+        v-show="isOpenMenu"
+        v-outside="closeMenu"
+        class="menu"
+        @navigate="closeMenu"
+      />
+    </div>
   </header>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import TheHeaderMenu from '@/components/layout/TheHeaderMenu.vue';
+import { outside } from '@/plugins/directives';
 
-@Component
+@Component({
+  components: {
+    TheHeaderMenu,
+  },
+  directives: {
+    outside,
+  },
+})
 export default class TheHeader extends Vue {
+  /** 会員メニューを開くか */
+  isOpenMenu = false;
 
+  /** 会員メニューを開く */
+  openMenu(): void {
+    this.isOpenMenu = true;
+  }
 
+  /** 会員メニューを閉じる */
+  closeMenu(): boolean {
+    if (!this.isOpenMenu) return false;
+
+    this.isOpenMenu = false;
+
+    return true;
+  }
 }
 </script>
 
@@ -36,4 +77,32 @@ export default class TheHeader extends Vue {
 
   & > .logo
     margin-right: auto
+
+.header-avatar
+  position: relative
+
+  & > .avatar
+    display: flex
+    align-items: center
+    cursor: pointer
+
+  & > .avatar > .image
+    width: 32px
+    height: 32px
+    border-radius: $layout-radius-md
+
+  & > .avatar > .icon
+    margin-left: $layout-margin-xsm
+    font-size: $font-sm
+    color: rgba($_white, $_light-md)
+
+  & > .avatar.-open > .icon
+    color: $_white
+
+  & > .menu
+    position: absolute
+    top: 42px
+    right: 0
+    z-index: 1
+    min-width: 160px
 </style>

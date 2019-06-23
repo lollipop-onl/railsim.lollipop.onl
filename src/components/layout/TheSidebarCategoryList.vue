@@ -50,10 +50,11 @@ export default class TheSidebarCategoryList extends Vue {
     border-top-right-radius: 21px
     border-bottom-right-radius: 21px
 
-  &:hover
+  &:not(.-active):hover
     text-decoration: underline
 
   &.-active
+    cursor: default
     background: $_white
 
   & > .icon

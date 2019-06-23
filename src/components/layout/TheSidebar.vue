@@ -8,6 +8,15 @@
       />
     </div>
     <TheSidebarCategoryList />
+    <div class="container">
+      <n-link
+        class="detail-search"
+        to="/search"
+      >
+        <i class="icon ion-ios-add" />
+        詳細検索
+      </n-link>
+    </div>
     <hr class="separation">
     <div class="container">
       <n-link
@@ -80,4 +89,20 @@ export default class TheSidebar extends Vue {
     margin: $layout-margin-md $layout-margin-sm
     border: none
     border-bottom: 1px solid rgba($_primary, $_light-lg)
+
+.detail-search
+  &
+    display: flex
+    align-items: center
+    margin: $layout-margin-xsm * 1.5 0 $layout-margin-sm
+    font-size: $font-md
+    color: rgba($_primary, $_light-sm)
+    text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+  & > .icon
+    margin-right: $layout-margin-sm
+    font-size: 20px
 </style>
