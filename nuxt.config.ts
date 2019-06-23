@@ -12,7 +12,8 @@ const config: NuxtConfiguration = {
   head: {
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      // スマホ版を作らないので無効化
+      // { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
     link: [
       { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap&subset=japanese' },

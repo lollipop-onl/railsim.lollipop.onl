@@ -7,9 +7,13 @@
         @mouseover="stopTimer"
         @mouseout="resetTimer"
       >
-        <BannerCarouselSlide class="slide" />
-        <BannerCarouselSlide class="slide" />
-        <BannerCarouselSlide class="slide" />
+        <template v-for="(_, i) in 3">
+          <BannerCarouselSlide
+            :key="i"
+            :active="i === activeSlideIndex"
+            class="slide"
+          />
+        </template>
       </div>
     </div>
     <BannerCarouselBullets
@@ -88,7 +92,7 @@ export default class BannerCarousel extends Vue {
   & > .carousel
     display: flex
     width: 300%
-    transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1)
+    transition: transform 0.8s $ease-in-out-quart
 
   & > .carousel > .slide
     flex-grow: 1
