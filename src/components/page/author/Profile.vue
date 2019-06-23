@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="author-profile">
     <div class="profile-hero">
       <img
         class="image"
@@ -35,6 +35,11 @@ export default class AuthorProfile extends Vue {
 </script>
 
 <style lang="sass" scoped>
+.author-profile
+  &
+    overflow: hidden
+    border-radius: $layout-radius-md
+
 .profile-hero
   &
     width: 100%
@@ -50,8 +55,6 @@ export default class AuthorProfile extends Vue {
     display: flex
     padding: 0 $layout-margin-md
     background: $_secondary
-    border-bottom-right-radius: $layout-radius-md
-    border-bottom-left-radius: $layout-radius-md
 
   & > .avatar
     position: relative

@@ -31,6 +31,7 @@
             ※ 公開者の指定した外部サイトを開きます
           </p>
         </div>
+        <PluginInformation />
       </div>
     </div>
   </div>
@@ -40,11 +41,13 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import PluginBannerCarousel from '@/components/page/plugin/PluginBannerCarousel.vue';
 import PluginIntroduction from '@/components/page/plugin/PluginIntroduction.vue';
+import PluginInformation from '@/components/page/plugin/PluginInformation.vue';
 
 @Component({
   components: {
     PluginBannerCarousel,
     PluginIntroduction,
+    PluginInformation,
   },
   layoutProps(this: PluginDetailPage) {
     return {
