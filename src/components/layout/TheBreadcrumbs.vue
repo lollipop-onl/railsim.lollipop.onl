@@ -5,7 +5,7 @@
         class="link"
         to="/"
       >
-        ホーム
+        トップ
       </n-link>
     </li>
     <template v-for="({ title, to }) in breadcrumbs">
