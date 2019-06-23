@@ -24,9 +24,14 @@
     <div class="heading">
       登録タグ
     </div>
-    <hr class="separation">
-    <div class="heading">
-      関連プラグイン
+    <div class="plugin-tags">
+      <AppPluginTag category>
+        施設
+      </AppPluginTag>
+      <AppPluginTag>港湾</AppPluginTag>
+      <AppPluginTag>船舶</AppPluginTag>
+      <AppPluginTag>期間限定</AppPluginTag>
+      <AppPluginTag>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea maiores vero aliquid vel! Quasi voluptates illum recusandae vel minus tempora voluptatem facere, saepe autem doloremque praesentium asperiores, quod perspiciatis officiis.</AppPluginTag>
     </div>
     <hr class="separation">
     <dl class="plugin-history">
@@ -48,8 +53,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import AppPluginTag from '@/components/ui/AppPluginTag.vue';
 
-@Component
+@Component({
+  components: {
+    AppPluginTag,
+  },
+})
 export default class PluginInformation extends Vue {
 }
 </script>
@@ -101,6 +111,10 @@ export default class PluginInformation extends Vue {
 
   &:hover > .username
     text-decoration: none
+
+.plugin-tags
+  &
+    margin-bottom: -$layout-margin-xsm
 
 .plugin-history
   &

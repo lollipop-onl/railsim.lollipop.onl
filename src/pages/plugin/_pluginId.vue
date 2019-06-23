@@ -76,7 +76,7 @@ export default class PluginDetailPage extends Vue {
 
   & > .information
     flex-grow: 1
-    min-width: 240px
+    width: 320px
 
 .plugin-download
   &
