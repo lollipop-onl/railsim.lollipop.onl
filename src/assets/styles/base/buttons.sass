@@ -1,3 +1,16 @@
+=button-theme($name)
+  &.-#{$name}
+    @content
+
+=button-theme-hover($name)
+  &.-#{$name}:not(:disabled):hover
+    @content
+
+=button-theme-disabled($name)
+  &.-#{$name}.-disabled,
+  &.-#{$name}:disabled
+    @content
+
 .button-base
   &
     display: inline-block
@@ -8,18 +21,23 @@
     text-align: center
     text-decoration: none
     border-radius: $layout-radius-md
+    cursor: pointer
     transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease
 
   &.-block
     display: block
     width: 100%
 
-  &.-outline
+  &.-disabled,
+  &:disabled
+    cursor: default
+
+  +button-theme(outline)
     color: $_primary
     border: 1px solid rgba($_primary, $_light-lg)
 
-  &.-outline:not(:disabled):hover
+  +button-theme-hover(outline)
     border-color: rgba($_primary, $_light-sm)
 
-  &.-outline:disabled
+  +button-theme-disabled(outline)
     opacity: $_light-md
