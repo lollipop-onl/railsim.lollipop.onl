@@ -41,7 +41,7 @@ export default class AppPluginTag extends Vue {
     transition: opacity 0.12s ease
 
   &:not(:last-child)
-    margin-rignt: $layout-margin-xsm
+    margin-right: $layout-margin-xsm
 
   &.-category
     background: #dfdfdf
