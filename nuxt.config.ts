@@ -23,12 +23,16 @@ const config: NuxtConfiguration = {
   extensions: ['js', 'ts'],
   mode: 'spa',
   modules: ['@nuxtjs/style-resources'],
-  router: {},
+  router: {
+    linkActiveClass: '-active',
+    linkExactActiveClass: '-active-exact',
+  },
   srcDir: 'src/',
   styleResources: {
     sass: [
       '~assets/styles/vars/*.sass',
       '~assets/styles/mixins/*.sass',
+      '~assets/styles/base/*.sass',
     ],
   },
   watch: ['~assets/styles/**/*.sass'],
