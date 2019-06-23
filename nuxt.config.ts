@@ -7,12 +7,16 @@ const config: NuxtConfiguration = {
       typeCheck: true,
     },
   },
-  css: ['reset.css'],
+  css: ['reset.css', '~assets/styles/root.sass'],
   env: {},
   head: {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
+    link: [
+      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap&subset=japanese' },
+      { rel: 'stylesheet', href: '//unpkg.com/ionicons@4.5.10-1/dist/css/ionicons.min.css' },
     ],
     title: 'RailSim Plugin Store',
   },

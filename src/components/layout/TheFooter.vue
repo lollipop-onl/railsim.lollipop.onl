@@ -55,7 +55,7 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component
-export default class TheHeader extends Vue {
+export default class TheFooter extends Vue {
 
 
 }
