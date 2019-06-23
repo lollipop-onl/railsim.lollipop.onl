@@ -25,6 +25,7 @@ import TheSidebar from '@/components/layout/TheSidebar.vue';
 import TheBreadcrumbs from '@/components/layout/TheBreadcrumbs.vue';
 import TheFooter from '@/components/layout/TheFooter.vue';
 import PageInitializerMixin from '@/mixins/PageInitializerMixin';
+import LayoutMixin from '@/mixins/LayoutMixin';
 
 @Component({
   components: {
@@ -33,9 +34,12 @@ import PageInitializerMixin from '@/mixins/PageInitializerMixin';
     TheBreadcrumbs,
     TheFooter,
   },
-  mixins: [PageInitializerMixin],
+  mixins: [PageInitializerMixin, LayoutMixin],
 })
 export default class DefaultLayout extends Vue {
+  mounted(): void {
+    console.log(this.layoutProps);
+  }
 }
 </script>
 
