@@ -2,7 +2,6 @@
  * @file Vue関連のデコレーター
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Vue, { PropOptions } from 'vue';
 import { createDecorator, VueDecorator } from 'vue-class-component';
 

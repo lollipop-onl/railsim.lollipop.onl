@@ -1,28 +1,33 @@
 <template>
-  <li class="plugin-list-item">
-    <div class="eyecatch">
-      <img
-        src="~assets/images/dev/banner.png"
-        class="image"
-      >
-    </div>
-    <div class="title">
-      プラグイン名プラグイン名プラグイン名プラグイン名
-    </div>
-    <div class="author">
-      by しもさんしぃ
-    </div>
-    <div class="likes">
-      <i class="icon ion-ios-thumbs-up" />
-      5
-    </div>
-    <div class="downloads">
-      <i class="icon ion-ios-download" />
-      1,025
-    </div>
-    <div class="datetime">
-      1 分以内
-    </div>
+  <li>
+    <n-link
+      to="/plugin/dummy"
+      class="plugin-list-item"
+    >
+      <div class="eyecatch">
+        <img
+          src="~assets/images/dev/banner.png"
+          class="image"
+        >
+      </div>
+      <div class="title">
+        プラグイン名プラグイン名プラグイン名プラグイン名
+      </div>
+      <div class="author">
+        by しもさんしぃ
+      </div>
+      <div class="likes">
+        <i class="icon ion-ios-thumbs-up" />
+        5
+      </div>
+      <div class="downloads">
+        <i class="icon ion-ios-download" />
+        1,025
+      </div>
+      <div class="datetime">
+        1 分以内
+      </div>
+    </n-link>
   </li>
 </template>
 
@@ -42,6 +47,7 @@ export default class AppPluginListItem extends Vue {
     grid-template-columns: auto auto 1fr auto
     grid-template-rows: auto auto auto auto
     color: rgba($_text, $_light-md)
+    text-decoration: none
 
   & > .eyecatch
     position: relative
@@ -52,6 +58,9 @@ export default class AppPluginListItem extends Vue {
     display: block
     padding-top: 56.25%
     content: ''
+
+  &:hover > .eyecatch
+    opacity: $_light-sm
 
   & > .eyecatch > .image
     position: absolute
@@ -69,6 +78,9 @@ export default class AppPluginListItem extends Vue {
     font-weight: bold
     color: $_text
     line-height: 1.5
+
+  &:hover > .title
+    text-decoration: underline
 
   & > .author
     grid-area: author

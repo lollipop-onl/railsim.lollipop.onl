@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <BannerCarousel class="carousel" />
+    <TopBannerCarousel class="carousel" />
     <AppHeading
       link-to="#"
       link-text="すべてを表示"
@@ -24,14 +24,14 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import AppHeading from '@/components/ui/AppHeading.vue';
 import AppPluginList from '@/components/ui/AppPluginList.vue';
 import AppSeparation from '@/components/ui/AppSeparation.vue';
-import BannerCarousel from '@/components/page/top/BannerCarousel.vue';
+import TopBannerCarousel from '@/components/page/top/TopBannerCarousel.vue';
 
 @Component({
   components: {
     AppHeading,
     AppPluginList,
     AppSeparation,
-    BannerCarousel,
+    TopBannerCarousel,
   },
 })
 export default class IndexPage extends Vue {

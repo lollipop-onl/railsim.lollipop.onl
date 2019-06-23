@@ -1,5 +1,8 @@
+import { bind } from 'helpful-decorators';
 import { Component, Vue } from 'nuxt-property-decorator';
+import { Route } from 'vue-router';
 import { ILayoutProps } from '@/types/layout';
+import { NoCache } from '@/utils';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -12,30 +15,40 @@ declare module 'vue/types/vue' {
  */
 @Component
 export default class LayoutMixin extends Vue {
-  /** Component mount flag */
-  public isMounted = false;
+  /** 更新をかけるタイムスタンプ */
+  public timestamp = 0;
 
   /** Lifecycle event */
   public mounted(): void {
-    this.isMounted = true;
+    this.timestamp = Date.now();
+
+    this.$routerUtil.addHook('afterEach', this.onNavigation);
+  }
+
+  /** Lifecycle event */
+  public beforeDestroy(): void {
+    this.$routerUtil.removeHook('afterEach', this.onNavigation);
   }
 
   /** Layout Props */
   public get layoutProps(): ILayoutProps {
-    if (!this.isMounted) return {};
+    const { pageComponent } = this;
 
-    if (!this.pageComponent) return {};
+    if (!this.timestamp) return {};
 
-    const { $options } = this.pageComponent;
+    if (!pageComponent) return {};
+
+    const { $options } = pageComponent;
     const { layoutProps } = $options;
 
     if (!layoutProps) return {};
 
-    return layoutProps.call(this.pageComponent);
+    return layoutProps.call(pageComponent);
   }
 
   /** Reference page component */
   /* eslint-disable */
+  @NoCache
   public get pageComponent(): Vue | void {
     const { componentInstance } = this.$vnode;
 
@@ -51,4 +64,25 @@ export default class LayoutMixin extends Vue {
     return nuxt.$children[0];
   }
   /* eslint-enable */
+
+  /**
+   * on navigation
+   */
+  @bind
+  private onNavigation(to: Route): void {
+    const matchedComponent = to.matched[0];
+
+    if (!matchedComponent) return;
+
+    const pageComponent: any = matchedComponent.components.default;
+    const { options } = pageComponent;
+
+    const updateTimestamp = ((): void => {
+      this.timestamp = Date.now();
+
+      options.created = options.created.filter((cb: Function) => cb !== updateTimestamp);
+    });
+
+    options.created.push(updateTimestamp);
+  }
 }

@@ -20,7 +20,7 @@
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 
 @Component
-export default class BannerCarouselSlide extends Vue {
+export default class TopBannerCarouselSlide extends Vue {
   /** アクティブなスライドかどうか */
   @Prop({ type: Boolean, required: true }) active: boolean;
 }

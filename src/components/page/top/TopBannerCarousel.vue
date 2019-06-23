@@ -8,7 +8,7 @@
         @mouseout="resetTimer"
       >
         <template v-for="(_, i) in 3">
-          <BannerCarouselSlide
+          <TopBannerCarouselSlide
             :key="i"
             :active="i === activeSlideIndex"
             class="slide"
@@ -16,7 +16,7 @@
         </template>
       </div>
     </div>
-    <BannerCarouselBullets
+    <TopBannerCarouselBullets
       class="carousel-bullets"
       :current="activeSlideIndex"
       @change="slideTo"
@@ -27,16 +27,16 @@
 <script lang="ts">
 import { bind } from 'helpful-decorators';
 import { Component, Vue } from 'nuxt-property-decorator';
-import BannerCarouselSlide from '@/components/page/top/BannerCarouselSlide.vue';
-import BannerCarouselBullets from '@/components/page/top/BannerCarouselBullets.vue';
+import TopBannerCarouselSlide from '@/components/page/top/TopBannerCarouselSlide.vue';
+import TopBannerCarouselBullets from '@/components/page/top/TopBannerCarouselBullets.vue';
 
 @Component({
   components: {
-    BannerCarouselSlide,
-    BannerCarouselBullets,
+    TopBannerCarouselSlide,
+    TopBannerCarouselBullets,
   },
 })
-export default class BannerCarousel extends Vue {
+export default class TopBannerCarousel extends Vue {
   /** アクティブなスライドのIndex */
   activeSlideIndex = 0;
 

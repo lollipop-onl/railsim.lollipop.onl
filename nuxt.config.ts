@@ -24,6 +24,9 @@ const config: NuxtConfiguration = {
   extensions: ['js', 'ts'],
   mode: 'spa',
   modules: ['@nuxtjs/style-resources'],
+  plugins: [
+    '~/plugins/router-util/register',
+  ],
   router: {
     linkActiveClass: '-active',
     linkExactActiveClass: '-active-exact',

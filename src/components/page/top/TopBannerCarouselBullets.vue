@@ -17,7 +17,7 @@ import {
 } from 'nuxt-property-decorator';
 
 @Component
-export default class BannerCarouselBullets extends Vue {
+export default class TopBannerCarouselBullets extends Vue {
   /** 現在のスライドのIndex */
   @Prop({ type: Number, required: true }) current: number;
 

@@ -28,6 +28,8 @@ rules:
     - error
     - allowExpressions: true # コールバックでは許容する
   "@typescript-eslint/indent": [error, 2] # インデントサイズを固定
+  "@typescript-eslint/no-explicit-any": "off"
+  "@typescript-eslint/no-parameter-properties": "off"
   # eslint-plugin-import
   import/no-unresolved: "off"
   import/no-extraneous-dependencies: "off"
