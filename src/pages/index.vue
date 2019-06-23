@@ -11,11 +11,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-@Component({
-  layoutProps: {
-    hello: 'world',
-  },
-})
+@Component
 export default class IndexPage extends Vue {
 }
 </script>

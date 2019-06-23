@@ -6,8 +6,11 @@
         <TheSidebar />
       </aside>
       <main class="main">
-        <div class="breadcrumbs-nav">
-          <TheBreadcrumbs />
+        <div
+          v-if="breadcrumbs.length > 0"
+          class="breadcrumbs-nav"
+        >
+          <TheBreadcrumbs :breadcrumbs="breadcrumbs" />
         </div>
         <nuxt />
       </main>
@@ -26,6 +29,7 @@ import TheBreadcrumbs from '@/components/layout/TheBreadcrumbs.vue';
 import TheFooter from '@/components/layout/TheFooter.vue';
 import PageInitializerMixin from '@/mixins/PageInitializerMixin';
 import LayoutMixin from '@/mixins/LayoutMixin';
+import { IBreadcrumbs } from '@/types/layout';
 
 @Component({
   components: {
@@ -37,8 +41,11 @@ import LayoutMixin from '@/mixins/LayoutMixin';
   mixins: [PageInitializerMixin, LayoutMixin],
 })
 export default class DefaultLayout extends Vue {
-  mounted(): void {
-    console.log(this.layoutProps);
+  /** パンくずリスト */
+  get breadcrumbs(): IBreadcrumbs[] {
+    const { breadcrumbs = [] } = this.layoutProps;
+
+    return breadcrumbs;
   }
 }
 </script>

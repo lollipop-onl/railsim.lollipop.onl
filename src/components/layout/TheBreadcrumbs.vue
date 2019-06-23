@@ -3,30 +3,36 @@
     <li class="item">
       <n-link
         class="link"
-        to="#"
+        to="/"
       >
-        トップ
+        ホーム
       </n-link>
     </li>
-    <li class="item">
-      <n-link
-        class="link"
-        to="#"
+    <template v-for="({ title, to }) in breadcrumbs">
+      <li
+        :key="title"
+        class="item"
       >
-        プラグイン検索プラグイン検索プラグイン検索プラグイン検索
-      </n-link>
-    </li>
-    <li class="item">
-      <span class="link">プラグイン検索プラグイン検索プラグイン検索プラグイン検索プラグイン検索</span>
-    </li>
+        <div
+          :is="to ? 'n-link' : 'span'"
+          class="link"
+          :to="to"
+        >
+          {{ title }}
+        </div>
+      </li>
+    </template>
   </ol>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { IBreadcrumbs } from '@/types/layout';
 
 @Component
 export default class TheBreadcrumbs extends Vue {
+  /** パンくずリスト */
+  @Prop({ type: Array, required: true }) breadcrumbs: IBreadcrumbs[];
 }
 </script>
 

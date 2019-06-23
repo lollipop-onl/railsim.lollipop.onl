@@ -31,6 +31,7 @@ rules:
   # eslint-plugin-import
   import/no-unresolved: "off"
   import/no-extraneous-dependencies: "off"
+  import/prefer-default-export: "off"
   # vue-eslint-parser
   vue/html-closing-bracket-spacing: # />の前にスペースを強制
     - error
