@@ -24,7 +24,7 @@
   "homepage": "https://gitlab.com/lollipop.onl/railsim.lollipop.onl#readme",
   "dependencies": {
     "@lollipop-onl/vuex-typesafe-helper": "^0.2.6",
-    "firebase": "^6.2.0",
+    "firebase": "^6.2.2",
     "helpful-decorators": "^2.0.4",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",
