@@ -5,7 +5,9 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import FirebaseAuth from '@/plugins/firebase/auth';
 import { IFirebaseConfig, FirebaseEventName } from '@/types/firebase';
+import { UserProfile } from '@/models';
 import { initialize } from '@/models/util';
 
 class Firebase {
@@ -24,7 +26,10 @@ class Firebase {
    */
   public constructor(
     private readonly config: IFirebaseConfig,
-    private readonly app = firebase.apps.length > 0 ? firebase.app() : firebase.initializeApp(config),
+    private readonly app = firebase.apps.length > 0
+      ? firebase.app()
+      : firebase.initializeApp(config),
+    public readonly auth = new FirebaseAuth(app),
   ) {
     this.initialize();
   }
@@ -80,8 +85,7 @@ class Firebase {
 
     this.app.auth().onAuthStateChanged(async (user) => {
       const uid = user && user.uid;
-      // const profile = uid && (await this.firestore.user.fetchProfile({ uid }));
-      const profile = {};
+      const profile = uid && (await UserProfile.query().where('uid', '==', uid));
 
       Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, profile, uid));
 
