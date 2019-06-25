@@ -19,15 +19,23 @@
     </div>
     <hr class="separation">
     <div class="container">
-      <n-link
-        to="#"
-        class="button-base -block -outline"
-      >
-        ログイン
-      </n-link>
-      <p class="help">
-        ログインするとお気に入りや拍手など限定機能を利用できます。
-      </p>
+      <template v-if="isInitialized">
+        <n-link
+          to="#"
+          class="button-base -block -outline"
+        >
+          ログイン
+        </n-link>
+        <p class="help">
+          ログインするとお気に入りや拍手など限定機能を利用できます。
+        </p>
+      </template>
+      <template v-else>
+        <img
+          class="spinner"
+          src="~assets/images/common/spinner-primary.svg"
+        >
+      </template>
     </div>
     <hr class="separation">
     <div class="container">
@@ -41,6 +49,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import TheSidebarSearch from '@/components/layout/TheSidebarSearch.vue';
 import TheSidebarCategoryList from '@/components/layout/TheSidebarCategoryList.vue';
 import TheSidebarNav from '@/components/layout/TheSidebarNav.vue';
+import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
@@ -50,8 +59,15 @@ import TheSidebarNav from '@/components/layout/TheSidebarNav.vue';
   },
 })
 export default class TheSidebar extends Vue {
+  $store!: RootStore;
+
   /** 検索ワード */
   searchWord = '';
+
+  /** 初期化中かどうか */
+  get isInitialized() {
+    return this.$store.state.auth.initialized;
+  }
 
   /**
    * キーワード検索を実行する
@@ -78,6 +94,11 @@ export default class TheSidebar extends Vue {
 
   & > .container:last-child
     margin-bottom: 0
+
+  & > .container > .spinner
+    display: block
+    width: 32px
+    margin: $layout-margin-xlg auto
 
   & > .container > .help
     margin-top: $layout-margin-xsm

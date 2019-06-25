@@ -59,14 +59,17 @@ import { RootStore } from '@/types/vuex';
   layoutProps(this: PluginDetailPage) {
     return {
       breadcrumbs: [
-        { title: 'しもさんしぃ', to: '/author/simochee' },
-        { title: this.plugin && this.plugin.name },
+        { title: 'しもさんしぃ', to: '/author/simochee', loading: this.isLoading },
+        { title: this.plugin && this.plugin.name, loading: this.isLoading },
       ],
     };
   },
 })
 export default class PluginDetailPage extends Vue {
   $store!: RootStore;
+
+  /** ローディング状態 */
+  isLoading = false;
 
   /** プラグインデータ */
   get plugin() {
@@ -83,10 +86,14 @@ export default class PluginDetailPage extends Vue {
   async mounted(): Promise<void> {
     const { pluginId } = this.$route.params;
 
+    this.isLoading = true;
+
     try {
       await this.$store.dispatch('plugin/fetchPlugin', pluginId);
     } catch (err) {
       this.$nuxt.error({ statusCode: 404 });
+    } finally {
+      this.isLoading = false;
     }
   }
 

@@ -8,7 +8,7 @@
         トップ
       </n-link>
     </li>
-    <template v-for="({ title, to }) in breadcrumbs">
+    <template v-for="({ title, to, loading }) in breadcrumbs">
       <li
         :key="title"
         class="item"
@@ -18,7 +18,12 @@
           class="link"
           :to="to"
         >
-          {{ title }}
+          <template v-if="loading">
+            <AppPlaceholder :length="10" />
+          </template>
+          <template v-else>
+            {{ title }}
+          </template>
         </div>
       </li>
     </template>
@@ -27,9 +32,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import AppPlaceholder from '@/components/ui/AppPlaceholder.vue';
 import { IBreadcrumbs } from '@/types/layout';
 
-@Component
+@Component({
+  components: {
+    AppPlaceholder,
+  },
+})
 export default class TheBreadcrumbs extends Vue {
   /** パンくずリスト */
   @Prop({ type: Array, required: true }) breadcrumbs: IBreadcrumbs[];

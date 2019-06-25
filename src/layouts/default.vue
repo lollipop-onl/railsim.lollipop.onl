@@ -66,7 +66,7 @@ export default class DefaultLayout extends Vue {
   & > .container
     +container
     display: flex
-    align-items: flex-start
+    align-items: stretch
 
   & > .container > .sidebar
     flex-shrink: 0

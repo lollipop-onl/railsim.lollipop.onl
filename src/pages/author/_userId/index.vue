@@ -1,20 +1,25 @@
 <template>
   <div class="author-page">
-    <AuthorProfile
-      v-if="user"
-      :user="user"
-      class="header"
-    />
-    <AppHeading>ピックアップ</AppHeading>
-    <AppPluginList />
-    <AppSeparation />
-    <AppHeading
-      link-to="#"
-      link-text="すべてを表示"
-    >
-      公開中のプラグイン
-    </AppHeading>
-    <AppPluginList />
+    <template v-if="isLoading">
+      <img src="~assets/images/common/spinner-primary.svg">
+    </template>
+    <template v-else>
+      <AuthorProfile
+        v-if="user"
+        :user="user"
+        class="header"
+      />
+      <AppHeading>ピックアップ</AppHeading>
+      <AppPluginList />
+      <AppSeparation />
+      <AppHeading
+        link-to="#"
+        link-text="すべてを表示"
+      >
+        公開中のプラグイン
+      </AppHeading>
+      <AppPluginList />
+    </template>
   </div>
 </template>
 
@@ -44,6 +49,9 @@ import { RootStore } from '@/types/vuex';
 export default class AuthorPage extends Vue {
   $store!: RootStore;
 
+  /** ローディング状態 */
+  isLoading = false;
+
   get user() {
     const { userId } = this.$route.params;
 
@@ -51,14 +59,22 @@ export default class AuthorPage extends Vue {
   }
 
   async beforeMount(): Promise<void> {
+    this.$nuxt.error({ statusCode: 503 });
+
+    return;
+
     const { userId } = this.$route.params;
+
+    this.isLoading = true;
 
     try {
       await this.$store.dispatch('user/fetchUserProfile', userId);
     } catch (err) {
       this.$nuxt.error({ statusCode: 404, message: 'Page Not Found' });
 
-      return;
+      
+    } finally {
+      this.isLoading = false;
     }
 
     if (!this.user) {

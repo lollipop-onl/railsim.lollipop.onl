@@ -12,4 +12,5 @@ export interface ILayoutProps {
 export interface IBreadcrumbs {
   title: string;
   to?: string;
+  loading?: boolean;
 }

@@ -12,6 +12,7 @@
     </n-link>
     <div class="header-avatar">
       <button
+        v-if="isInitialized"
         :class="{'avatar': true, '-open': isOpenMenu}"
         @click="openMenu"
       >
@@ -21,6 +22,10 @@
         >
         <i class="icon ion-md-arrow-dropdown" />
       </button>
+      <AppPlaceholder
+        v-else
+        class="placeholder"
+      />
       <transition name="avatarMenu">
         <TheHeaderMenu
           v-show="isOpenMenu"
@@ -36,19 +41,29 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 import TheHeaderMenu from '@/components/layout/TheHeaderMenu.vue';
+import AppPlaceholder from '@/components/ui/AppPlaceholder.vue';
 import { outside } from '@/plugins/directives';
+import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
     TheHeaderMenu,
+    AppPlaceholder,
   },
   directives: {
     outside,
   },
 })
 export default class TheHeader extends Vue {
+  $store!: RootStore;
+
   /** 会員メニューを開くか */
   isOpenMenu = false;
+
+  /** 初期化中かどうか */
+  get isInitialized() {
+    return this.$store.state.auth.initialized;
+  }
 
   /** 会員メニューを開く */
   openMenu(): void {
@@ -81,13 +96,15 @@ export default class TheHeader extends Vue {
     margin-right: auto
 
 .header-avatar
-  position: relative
+  &
+    position: relative
 
   & > .avatar
     display: flex
     align-items: center
     cursor: pointer
 
+  & > .placeholder,
   & > .avatar > .image
     width: 32px
     height: 32px
@@ -107,6 +124,9 @@ export default class TheHeader extends Vue {
     right: 0
     z-index: 1
     min-width: 160px
+
+  & > .placeholder
+    margin-right: 21px
 
 .avatarMenu-enter-active,
 .avatarMenu-leave-active
