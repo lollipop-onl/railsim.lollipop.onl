@@ -166,17 +166,15 @@ export class Base implements Document {
    * @constructor
    */
   public constructor(id?: string, data?: DocumentData) {
-    console.log(firestore);
-
     if (!firestore) {
       throw Error('[model/util] Model utility is not initialized.');
     }
 
+    this.id = id || firestore.collection(`version/${Base.version}/${Base.modelName}`).doc().id;
     this.version = this.getVersion();
     this.modelName = this.getModelName();
     this.path = this.getPath();
     this.reference = this.getReference();
-    this.id = id || firestore.collection(`version/${Base.version}/${Base.modelName}`).doc().id;
 
     const properties: (keyof DocumentData)[] = Reflect.getMetadata(propertyMetadataKey, this) || [];
 

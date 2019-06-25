@@ -39,12 +39,12 @@ import { User } from '@/models/User';
   },
 })
 export default class IndexPage extends Vue {
-  createUser(): void {
+  async createUser(): Promise<void> {
     const user = new User('simochee');
 
     user.name = 'Ryoya Tamura';
 
-    user.save();
+    await user.save();
   }
 }
 </script>

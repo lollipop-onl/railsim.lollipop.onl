@@ -1,5 +1,15 @@
 import NuxtConfiguration from '@nuxt/config';
-import * as C from './src/constants';
+
+require('dotenv').config();
+
+const {
+  NUXT_ENV_API_KEY = '',
+  NUXT_ENV_AUTH_DOMAIN = '',
+  NUXT_ENV_DATABASE_URL = '',
+  NUXT_ENV_PROJECT_ID = '',
+  NUXT_ENV_STORAGE_BUCKET = '',
+  NUXT_ENV_MESSAGING_SENDER_ID = '',
+} = process.env;
 
 const config: NuxtConfiguration = {
   build: {
@@ -9,7 +19,14 @@ const config: NuxtConfiguration = {
     },
   },
   css: ['reset.css', '~assets/styles/root.sass'],
-  env: {},
+  env: {
+    NUXT_ENV_API_KEY,
+    NUXT_ENV_AUTH_DOMAIN,
+    NUXT_ENV_DATABASE_URL,
+    NUXT_ENV_PROJECT_ID,
+    NUXT_ENV_STORAGE_BUCKET,
+    NUXT_ENV_MESSAGING_SENDER_ID,
+  },
   head: {
     meta: [
       { charset: 'utf-8' },
@@ -28,6 +45,7 @@ const config: NuxtConfiguration = {
   plugins: [
     '~/plugins/constants',
     '~/plugins/router-util/register',
+    '~/plugins/firebase/register',
   ],
   router: {
     linkActiveClass: '-active',
