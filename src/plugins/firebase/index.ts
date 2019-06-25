@@ -5,7 +5,8 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { FirebaseEventName } from '@/types/firebase';
+import { IFirebaseConfig, FirebaseEventName } from '@/types/firebase';
+import { initialize } from '@/models/util';
 
 class Firebase {
   /** イベントリスナーのレコード */
@@ -75,6 +76,8 @@ class Firebase {
    * Firebaseの初期化
    */
   private initialize(): void {
+    initialize(this.app.firestore());
+
     this.app.auth().onAuthStateChanged(async (user) => {
       const uid = user && user.uid;
       // const profile = uid && (await this.firestore.user.fetchProfile({ uid }));

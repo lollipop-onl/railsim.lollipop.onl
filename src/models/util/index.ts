@@ -1,1 +1,10 @@
-export { firestore, initialize } from './initialize';
+export { initialize } from './initialize';
+export { BatchType } from './batch';
+export { Base, property } from './base';
+export { SubCollection } from './subCollection';
+export { NestedCollection } from './nestedCollection';
+export { ReferenceCollection } from './referenceCollection';
+export { List } from './list';
+export { Query } from './query';
+export { DataSource } from './dataSource';
+export { File } from './file';

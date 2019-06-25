@@ -4,6 +4,8 @@ import { Firestore } from './types';
 let firestore: Firestore;
 
 export const initialize = (appFirestore: Firestore): void => {
+  console.log('initialized');
+
   firestore = appFirestore;
 };
 

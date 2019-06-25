@@ -7,8 +7,26 @@ import 'reflect-metadata';
 
 import { firestore } from './initialize';
 import {
-  DocumentData, DocumentReference, DocumentSnapshot, Timestamp, CollectionReference, DateType, AnySubCollection, AnyList, ValueProtocol, WriteBatch, Transaction,
+  Document,
+  DocumentData,
+  DocumentReference,
+  DocumentSnapshot,
+  Timestamp,
+  CollectionReference,
+  DateType,
+  AnySubCollection,
+  AnyList,
+  FileData,
+  WriteBatch,
+  Transaction,
 } from './types';
+import { BatchType, Batchable } from './batch';
+import { SubCollection } from './subCollection';
+import { NestedCollection } from './nestedCollection';
+import { ReferenceCollection } from './referenceCollection';
+import { File } from './file';
+import { List } from './list';
+import { Query } from './query';
 
 export const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
@@ -41,7 +59,7 @@ export function isFile(arg: any): arg is File {
   return (arg instanceof File);
 }
 
-export function isFileType(arg: any): boolean {
+export function isFileType(arg: any): arg is FileData {
   if (arg instanceof Object) {
     return ((arg as Record<string, any>).hasOwnProperty('mimeType')
           && (arg as Record<string, any>).hasOwnProperty('name')
@@ -61,7 +79,7 @@ export function isTimestamp(arg: any): arg is firebase.firestore.Timestamp {
   return (arg instanceof firebase.firestore.Timestamp);
 }
 
-export const isUndefined = (arg: any): arg is (undefined | null) => (arg === null || arg === undefined);
+export const isUndefined = (arg: any): arg is (undefined | null) => arg == null;
 
 /**
  * Base class
@@ -88,19 +106,27 @@ export class Base implements Document {
     return `version/${this.version}/${this.modelName}`;
   }
 
-  public static query<T extends typeof Base>(this: T): DataSourceQuery.Query<T> {
-    return new DataSourceQuery.Query(this.reference, this.reference, this);
+  public static query<T extends typeof Base>(this: T): Query<T> {
+    return new Query(this.reference, this.reference, this);
   }
 
   /** Firestoreから値を取り出す */
-  public static async get<T extends typeof Base>(this: T, id: string): Promise<InstanceType<T> | undefined> {
+  public static async get<T extends typeof Base>(
+    this: T,
+    id: string,
+  ): Promise<InstanceType<T> | undefined> {
     try {
       const snapshot: DocumentSnapshot = await firestore.doc(`${this.path}/${id}`).get();
+
       if (snapshot.exists) {
         const document = new this(snapshot.id, {}) as InstanceType<T>;
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         document.setData(snapshot.data()!);
+
         return document;
       }
+
       return undefined;
     } catch (error) {
       throw error;
@@ -108,6 +134,12 @@ export class Base implements Document {
   }
 
   // メンバー定義
+  public version: number
+
+  public modelName: string
+
+  public path: string
+
   public reference: DocumentReference;
 
   public snapshot?: DocumentSnapshot;
@@ -134,11 +166,16 @@ export class Base implements Document {
    * @constructor
    */
   public constructor(id?: string, data?: DocumentData) {
+    console.log(firestore);
+
     if (!firestore) {
       throw Error('[model/util] Model utility is not initialized.');
     }
 
-    this.reference = Base.reference;
+    this.version = this.getVersion();
+    this.modelName = this.getModelName();
+    this.path = this.getPath();
+    this.reference = this.getReference();
     this.id = id || firestore.collection(`version/${Base.version}/${Base.modelName}`).doc().id;
 
     const properties: (keyof DocumentData)[] = Reflect.getMetadata(propertyMetadataKey, this) || [];
@@ -214,8 +251,9 @@ export class Base implements Document {
       }
 
       if (isFileArray(value)) {
-        this._prop[key] = value.map((fileValue) => {
+        this._prop[key] = value.map((fileValue: any) => {
           const file = new File();
+
           file.init(fileValue);
 
           return file;
@@ -243,8 +281,20 @@ export class Base implements Document {
     return false;
   }
 
+  public getVersion(): number {
+    return Base.version;
+  }
+
+  public getModelName(): string {
+    return this.constructor.toString().split('(' || /s+/)[0].split(' ' || /s+/)[1].toLowerCase();
+  }
+
+  public getPath(): string {
+    return `version/${this.version}/${this.modelName}/${this.id}`;
+  }
+
   public getReference(): DocumentReference {
-    return firestore.doc(Base.path);
+    return firestore.doc(this.path);
   }
 
   public getProperties(): (keyof DocumentData)[] {
@@ -337,7 +387,7 @@ export class Base implements Document {
       }
 
       if (isFile(value)) {
-        if (Object.keys(file).length) {
+        if (Object.keys(value).length) {
           updateValues[key] = value.value();
         }
 
@@ -367,11 +417,9 @@ export class Base implements Document {
 
     this.batchID = batchID;
 
-    const { reference } = Base;
-
     switch (type) {
       case BatchType.save:
-        writeBatch.set(reference, this._value(), { merge: true });
+        writeBatch.set(this.reference, this._value(), { merge: true });
 
         this.eachPropertiesDescriptor((value, key) => {
           if (!isCollection(value)) return;
@@ -384,7 +432,7 @@ export class Base implements Document {
         });
 
         if (this.shouldBeReplicated()) {
-          writeBatch.set(reference, this._value, { merge: true });
+          writeBatch.set(this.reference, this._value, { merge: true });
         }
 
         return writeBatch;
@@ -392,18 +440,18 @@ export class Base implements Document {
         if (this.isSaved) {
           const updateValue = this.updateValue();
 
-          if (Object.keys(updateValue) > 0) {
-            writeBatch.set(reference, this._updateValue(), { merge: true });
+          if (Object.keys(updateValue).length > 0) {
+            writeBatch.set(this.reference, this._updateValue(), { merge: true });
           }
 
           if (this.shouldBeReplicated) {
-            writeBatch.set(reference, updateValue, { merge: true });
+            writeBatch.set(this.reference, updateValue, { merge: true });
           }
         } else {
-          writeBatch.set(reference, this._value(), { merge: true });
+          writeBatch.set(this.reference, this._value(), { merge: true });
 
           if (this.shouldBeReplicated()) {
-            writeBatch.set(reference, this._value(), { merge: true });
+            writeBatch.set(this.reference, this._value(), { merge: true });
           }
         }
 
@@ -419,10 +467,10 @@ export class Base implements Document {
 
         return writeBatch;
       case BatchType.delete:
-        writeBatch.delete(reference);
+        writeBatch.delete(this.reference);
 
         if (this.shouldBeReplicated()) {
-          writeBatch.delete(reference);
+          writeBatch.delete(this.reference);
         }
 
         return writeBatch;
@@ -432,7 +480,7 @@ export class Base implements Document {
   }
 
   public batch(type: BatchType, batchID = UUID.v4()): void {
-    if (batchID === this.batch) return;
+    if (batchID === this.batchID) return;
 
     this.batchID = batchID;
 
@@ -503,13 +551,15 @@ export class Base implements Document {
     }
   }
 
-  public async delete(): any {
-    return await Base.reference.delete();
+  public async delete(): Promise<void> {
+    return this.reference.delete();
   }
 
-  public async fetch(transaction?: Transaction): void {
+  public async fetch(transaction?: Transaction): Promise<this> {
     try {
-      const snapshot = transaction ? await transaction.get(Base.reference) : await Base.reference.get();
+      const snapshot = transaction
+        ? await transaction.get(this.reference)
+        : await this.reference.get();
       this.snapshot = snapshot;
 
       const data = snapshot.data();
@@ -525,7 +575,10 @@ export class Base implements Document {
     }
   }
 
-  private eachPropertiesDescriptor(fn: (value: any, key: keyof DocumentData) => void, properties = this.getProperties()): void {
+  private eachPropertiesDescriptor(
+    fn: (value: any, key: keyof DocumentData) => void,
+    properties = this.getProperties(),
+  ): void {
     properties.forEach((key) => {
       const descriptor = Object.getOwnPropertyDescriptor(this, key);
 

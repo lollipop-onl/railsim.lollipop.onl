@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 import * as firebase from 'firebase/app';
+import { Base } from './base';
+import { Batchable } from './batch';
 
 // Firebase alias
 export type Firestore = firebase.firestore.Firestore
