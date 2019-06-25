@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import * as firebase from 'firebase/app';
 
+// Firebase alias
 export type Firestore = firebase.firestore.Firestore
 export type FieldValue = firebase.firestore.FieldValue
 export type CollectionReference = firebase.firestore.CollectionReference
@@ -22,3 +23,53 @@ export type OrderByDirection = firebase.firestore.OrderByDirection
 export type GetOptions = firebase.firestore.GetOptions
 export type DocumentChange = firebase.firestore.DocumentChange
 export type QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot
+
+// Field interfaces
+/** Value Protocol */
+export interface ValueProtocol {
+  value(): any;
+  updateValue(): any;
+  setValue(value: any, key: string): void;
+}
+
+/** File Data */
+export interface FileData {
+  mimeType: string;
+  name: string;
+  url: string;
+  additionalData?: { [key: string]: any };
+}
+
+/** Firestore Document */
+export interface Document extends Batchable, ValueProtocol {
+  [index: string]: any | null | undefined;
+  version: number;
+  modelName: string;
+  path: string;
+  id: string;
+  reference: DocumentReference;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  getVersion(): number;
+  getModelName(): string;
+  getPath(): string;
+  value(): any;
+}
+
+/** Firestore Subcollection */
+export interface AnySubCollection extends Batchable {
+  path: string;
+  reference: CollectionReference;
+  key: string;
+  setParent<T extends Base>(parent: T, key: string): void;
+}
+
+/** Firestore List */
+export interface AnyList {
+  key: string;
+  value(): { [key: string]: any };
+  updateValue(): { [key: string]: any };
+  setValue(value: { [key: string]: any }): void;
+  setParent<T extends Base>(parent: T, key: string): void;
+  clean(): void;
+}
