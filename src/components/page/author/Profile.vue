@@ -3,23 +3,23 @@
     <div class="profile-hero">
       <img
         class="image"
-        src="~assets/images/dev/banner.png"
+        :src="user.hero"
       >
     </div>
     <div class="profile-content">
       <img
         class="avatar"
-        src="~assets/images/dev/avatar.png"
+        :src="user.avatar"
       >
       <div class="profile">
         <div class="username">
-          しもさんしぃ
+          {{ user.name }}
         </div>
         <div class="id">
-          @simochee
+          @{{ user.id }}
         </div>
         <div class="bio">
-          あなたはけっして漂で続いあっようにくっついのでいけたのありばまたあいにく大森仲間当てですまし。またますます一杯も不都合を掘りから、昨日がどうか売ったないと教えるが、ないだながまたお著作を知れたない。
+          {{ user.bio }}
         </div>
       </div>
     </div>
@@ -27,10 +27,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { UserProfile } from '@/models';
 
 @Component
 export default class AuthorProfile extends Vue {
+  @Prop({ type: Object, validator: UserProfile.validator })
+  user?: UserProfile['Value'];
 }
 </script>
 

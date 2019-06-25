@@ -52,6 +52,7 @@ import PluginInformation from '@/components/page/plugin/PluginInformation.vue';
   layoutProps(this: PluginDetailPage) {
     return {
       breadcrumbs: [
+        { title: 'しもさんしぃ', to: '/author/simochee' },
         { title: '港湾シリーズ第１段ガントリークレーンとタグボート港湾シリーズ第１段ガントリークレーンとタグボート港湾' },
       ],
     };

@@ -32,6 +32,8 @@ export const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 const propertyMetadataKey = Symbol('property');
 
+type DocumentValue<T extends Record<string, any>> = Omit<T, Exclude<keyof Base, 'updatedAt' | 'createdAt' | 'id'>>;
+
 /**
  * プロパティを宣言するためのデコレータ
  */
@@ -110,11 +112,33 @@ export class Base implements Document {
     return new Query(this.reference, this.reference, this);
   }
 
-  /** Firestoreから値を取り出す */
+  /**
+   * Vue.jsのProps向けの型バリデータ。`updatedAt`と`createdAt`が存在するかを判定する
+   */
+  public static validator(value: unknown): boolean {
+    if (typeof value !== 'object' || value == null) return false;
+
+    const keys = Object.keys(value);
+
+    return ['updatedAt', 'createdAt', 'id'].every(key => keys.includes(key));
+  }
+
+  /**
+   * Firestoreから値を取り出す
+   * @param id 取り出すドキュメントのID
+   * @param [fromCache] キャッシュから参照するか
+   */
   public static async get<T extends typeof Base>(
     this: T,
     id: string,
+    withCache = true,
   ): Promise<InstanceType<T> | undefined> {
+    const cachedDocument = Base.cachedDocuments.get(id);
+
+    if (withCache && cachedDocument) {
+      return cachedDocument;
+    }
+
     try {
       const snapshot: DocumentSnapshot = await firestore.doc(`${this.path}/${id}`).get();
 
@@ -124,6 +148,8 @@ export class Base implements Document {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         document.setData(snapshot.data()!);
 
+        Base.cachedDocuments.set(id, document);
+
         return document;
       }
 
@@ -132,6 +158,11 @@ export class Base implements Document {
       throw error;
     }
   }
+
+  private static cachedDocuments = new Map<string, any>();
+
+  // 型定義
+  public Value: DocumentValue<this>;
 
   // メンバー定義
   public version: number
@@ -188,9 +219,10 @@ export class Base implements Document {
       return;
     }
 
-    properties.forEach((prop) => {
-      const key = prop;
+    properties.forEach((key) => {
       const value = data[key];
+
+      this._prop[key] = value;
 
       if (!isFileType(value)) {
         this.defineProperty(key, value);
@@ -344,12 +376,14 @@ export class Base implements Document {
     return values;
   }
 
-  public value(): DocumentData {
-    const values = this.rawValue();
+  public value(): this['Value'] {
+    const values = this.rawValue() as this['Value'];
+
     const serverTimestamp = firebase.firestore.Timestamp.fromDate(new Date());
 
     values.updatedAt = this.updatedAt || serverTimestamp;
     values.createdAt = this.updatedAt || serverTimestamp;
+    values.id = this.id;
 
     return values;
   }

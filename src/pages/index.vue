@@ -28,7 +28,7 @@ import AppHeading from '@/components/ui/AppHeading.vue';
 import AppPluginList from '@/components/ui/AppPluginList.vue';
 import AppSeparation from '@/components/ui/AppSeparation.vue';
 import TopBannerCarousel from '@/components/page/top/TopBannerCarousel.vue';
-import { User } from '@/models/User';
+import { RootStore } from '~/types/vuex';
 
 @Component({
   components: {
@@ -39,12 +39,16 @@ import { User } from '@/models/User';
   },
 })
 export default class IndexPage extends Vue {
+  $store!: RootStore;
+
   async createUser(): Promise<void> {
-    const user = new User('simochee');
-
-    user.name = 'Ryoya Tamura';
-
-    await user.save();
+    await this.$store.dispatch('user/createUser', {
+      id: 'simochee',
+      data: {
+        name: 'Ryoya Tamura',
+        avatar: 'http://placehold.jp/320x320.png',
+      },
+    });
   }
 }
 </script>

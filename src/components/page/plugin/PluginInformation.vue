@@ -5,7 +5,7 @@
     </div>
     <n-link
       class="plugin-author"
-      to="/author/dummy"
+      to="/author/simochee"
     >
       <div class="avatar">
         <img
