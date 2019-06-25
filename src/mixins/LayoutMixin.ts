@@ -32,7 +32,7 @@ export default class LayoutMixin extends Vue {
 
   /** Layout Props */
   public get layoutProps(): ILayoutProps {
-    const { pageComponent } = this;
+    const { pageComponent, $nuxt } = this;
 
     if (!this.timestamp) return {};
 
@@ -43,7 +43,13 @@ export default class LayoutMixin extends Vue {
 
     if (!layoutProps) return {};
 
-    return layoutProps.call(pageComponent);
+    const props = layoutProps.call(pageComponent);
+    const isError = !!($nuxt as any).nuxt.err;
+
+    return {
+      ...props,
+      isError,
+    };
   }
 
   /** Reference page component */

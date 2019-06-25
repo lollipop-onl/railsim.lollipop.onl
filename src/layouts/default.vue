@@ -7,7 +7,7 @@
       </aside>
       <main class="main">
         <div
-          v-if="breadcrumbs.length > 0"
+          v-if="!isError && breadcrumbs.length > 0"
           class="breadcrumbs-nav"
         >
           <TheBreadcrumbs :breadcrumbs="breadcrumbs" />
@@ -46,6 +46,11 @@ export default class DefaultLayout extends Vue {
     const { breadcrumbs = [] } = this.layoutProps;
 
     return breadcrumbs;
+  }
+
+  /** エラーが発生していないか */
+  get isError() {
+    return this.layoutProps.isError || false;
   }
 }
 </script>

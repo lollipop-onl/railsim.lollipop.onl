@@ -4,6 +4,7 @@
 
 /** Layout Props */
 export interface ILayoutProps {
+  isError?: boolean;
   breadcrumbs?: IBreadcrumbs[];
 }
 

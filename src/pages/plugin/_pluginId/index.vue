@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="plugin">
     <div class="plugin-carousel">
       <PluginBannerCarousel />
     </div>
@@ -14,12 +14,15 @@
         ある上人の以上その朋党はこれら中を得なかと岡田君で出れたまし、間接の時間ずという皆発展なけれうでて、主意の時に主義から以前だけの仕立に時分して来ば、更にの次第よりやっばこういうためにいやいやしなけれんと掘りなけれのうから、悪いたんのでそうご孔雀思いますのたたな。だから気か普通か病気が釣っですながら、場合末横をなれからいるありためよりご希望の時分へ挙げたない。場合をはどうかしから果せるですたべからでて、勢い大分断わろば乱暴も少し少なくますのませ。
 
         また不学習をありからはいるないのですから、本位をは、向後あなたか立って送っれるですでしょ許されるたですと行っから、他は云っているないます。同時にまあはすこぶる自分といういるうと、私がは毎日中ほど私のごお出かけはおかしい描けるおきでた。私はもうお尋ねののよりお誤認はなればしまっですなででて、一三の国家のわざわざ取りつかれましという運動たて、すると漠然たる爺さんの中学校で怒らがるから、いつかに何の馳がお尋ねを得からならなのべきんと注文述べて説明しいなくっない。
+        <pre>
+          {{ plugin }}
+        </pre>
       </PluginIntroduction>
       <div class="information">
         <div class="plugin-download">
           <n-link
-            to="#"
             class="button"
+            :to="downloadUrl"
           >
             <i class="icon ion-ios-cloud-download" />
             <img
@@ -31,6 +34,9 @@
             ※ 公開者の指定した外部サイトを開きます
           </p>
         </div>
+        <button @click="createPlugin">
+          Create a new plugin !
+        </button>
         <PluginInformation />
       </div>
     </div>
@@ -42,6 +48,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import PluginBannerCarousel from '@/components/page/plugin/PluginBannerCarousel.vue';
 import PluginIntroduction from '@/components/page/plugin/PluginIntroduction.vue';
 import PluginInformation from '@/components/page/plugin/PluginInformation.vue';
+import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
@@ -53,12 +60,44 @@ import PluginInformation from '@/components/page/plugin/PluginInformation.vue';
     return {
       breadcrumbs: [
         { title: 'しもさんしぃ', to: '/author/simochee' },
-        { title: '港湾シリーズ第１段ガントリークレーンとタグボート港湾シリーズ第１段ガントリークレーンとタグボート港湾' },
+        { title: this.plugin && this.plugin.name },
       ],
     };
   },
 })
 export default class PluginDetailPage extends Vue {
+  $store!: RootStore;
+
+  /** プラグインデータ */
+  get plugin() {
+    const { pluginId } = this.$route.params;
+
+    return this.$store.state.plugin.pluginData[pluginId];
+  }
+
+  /** ダウンロードページのリンク */
+  get downloadUrl(): string {
+    return `${this.$route.path}/download`;
+  }
+
+  async mounted(): Promise<void> {
+    const { pluginId } = this.$route.params;
+
+    try {
+      await this.$store.dispatch('plugin/fetchPlugin', pluginId);
+    } catch (err) {
+      this.$nuxt.error({ statusCode: 404 });
+    }
+  }
+
+  async createPlugin(): Promise<void> {
+    await this.$store.dispatch('plugin/createPlugin', {
+      data: {
+        name: `【港湾セット】ガントリークレーン v${Math.floor(Math.random() * 1000) % 10}`,
+        downloadUrl: 'http://google.com',
+      },
+    });
+  }
 }
 </script>
 

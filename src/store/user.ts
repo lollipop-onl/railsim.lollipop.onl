@@ -4,9 +4,7 @@ import {
   DefineActionContext,
   DefineStoreModule,
 } from '@lollipop-onl/vuex-typesafe-helper';
-import { UserProfile, UserCore, UserPrivate } from '@/models';
-
-export const strict = false;
+import { UserProfile, UserCore } from '@/models';
 
 export interface IState {
   userData: Record<string, UserProfile['Value']>;
@@ -50,8 +48,9 @@ export const actions = {
   async createUser(context: Ctx, payload: { id: string; data: UserProfile['Value'] }): Promise<void> {
     const { id, data } = payload;
     const user = new UserProfile(id, data);
+    const userCore = new UserCore();
 
-    await user.save();
+    await Promise.all([user.save(), userCore.save()]);
   },
 };
 export type Actions = Convertor<typeof actions, {

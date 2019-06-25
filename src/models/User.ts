@@ -21,9 +21,3 @@ export class UserCore extends Base {
   /** アカウントがアクティブかどうか */
   @property isActive = false;
 }
-
-/** プライベートなユーザー情報 */
-export class UserPrivate extends Base {
-  /** 総ダウンロード数 */
-  @property totalDownloads = 0;
-}

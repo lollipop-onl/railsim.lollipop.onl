@@ -1,12 +1,18 @@
 <template>
-  <h1>Error!</h1>
+  <div>
+    <h1>Error!</h1>
+    <pre>{{ error }}</pre>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
 
-@Component
+@Component({
+  layout: 'empty',
+})
 export default class ErrorLayout extends Vue {
+  @Prop({ type: Object }) error: object;
 }
 </script>
 
