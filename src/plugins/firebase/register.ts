@@ -40,7 +40,7 @@ export default (context: Context, inject: Function) => {
       if (!state.auth.initialized) commit('auth/completeInitialization');
 
       commit('auth/updateLoginStatus', loggedIn);
-      commit('auth/updateProfile', user);
+      commit('auth/updateProfile', user && user);
     },
   );
 };

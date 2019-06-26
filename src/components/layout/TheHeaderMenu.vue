@@ -34,7 +34,7 @@
     <n-link
       class="link"
       to="/mypage/logout"
-      @click.native="onNav"
+      @click.native="navigate"
     >
       ログアウト
     </n-link>

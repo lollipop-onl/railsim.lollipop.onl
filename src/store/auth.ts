@@ -6,8 +6,6 @@ import {
 } from '@lollipop-onl/vuex-typesafe-helper';
 import { UserProfile } from '@/models';
 
-export const strict = false;
-
 export interface IState {
   /** 初期化されているか */
   initialized: boolean;

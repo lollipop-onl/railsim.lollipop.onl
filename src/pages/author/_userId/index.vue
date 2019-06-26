@@ -59,10 +59,6 @@ export default class AuthorPage extends Vue {
   }
 
   async beforeMount(): Promise<void> {
-    this.$nuxt.error({ statusCode: 503 });
-
-    return;
-
     const { userId } = this.$route.params;
 
     this.isLoading = true;
@@ -71,8 +67,6 @@ export default class AuthorPage extends Vue {
       await this.$store.dispatch('user/fetchUserProfile', userId);
     } catch (err) {
       this.$nuxt.error({ statusCode: 404, message: 'Page Not Found' });
-
-      
     } finally {
       this.isLoading = false;
     }

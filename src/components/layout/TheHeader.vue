@@ -12,7 +12,7 @@
     </n-link>
     <div class="header-avatar">
       <button
-        v-if="isInitialized"
+        v-if="auth.initialized && auth.loggedIn"
         :class="{'avatar': true, '-open': isOpenMenu}"
         @click="openMenu"
       >
@@ -23,7 +23,7 @@
         <i class="icon ion-md-arrow-dropdown" />
       </button>
       <AppPlaceholder
-        v-else
+        v-if="!auth.initialized"
         class="placeholder"
       />
       <transition name="avatarMenu">
@@ -61,8 +61,8 @@ export default class TheHeader extends Vue {
   isOpenMenu = false;
 
   /** 初期化中かどうか */
-  get isInitialized() {
-    return this.$store.state.auth.initialized;
+  get auth() {
+    return this.$store.state.auth;
   }
 
   /** 会員メニューを開く */

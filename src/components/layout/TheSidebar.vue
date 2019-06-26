@@ -20,12 +20,12 @@
     <hr class="separation">
     <div class="container">
       <template v-if="isInitialized">
-        <n-link
-          to="#"
+        <button
           class="button-base -block -outline"
+          @click="$store.dispatch('auth/login')"
         >
           ログイン
-        </n-link>
+        </button>
         <p class="help">
           ログインするとお気に入りや拍手など限定機能を利用できます。
         </p>

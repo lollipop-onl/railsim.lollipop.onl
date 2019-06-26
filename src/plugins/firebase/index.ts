@@ -85,9 +85,10 @@ class Firebase {
 
     this.app.auth().onAuthStateChanged(async (user) => {
       const uid = user && user.uid;
-      const profile = uid && (await UserProfile.query().where('uid', '==', uid));
+      const profile = uid && (await UserProfile.query().where('uid', '==', uid).get());
+      const userProfile = profile && profile.docs.length > 0 && profile.docs[0].data();
 
-      Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, profile, uid));
+      Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, userProfile, uid));
 
       if (!this.isInitialized) {
         this.isInitialized = false;
