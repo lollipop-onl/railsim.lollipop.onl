@@ -1,7 +1,7 @@
 <template>
   <div
     class="login-form-card"
-    :calss="{'-revert': revert}"
+    :class="{'-reverse': reverse}"
   >
     <div class="side">
       <img
@@ -9,7 +9,7 @@
         src="~assets/images/common/logo.svg"
         alt="Logo"
       >
-      <p>sidebar</p>
+      <slot name="side" />
     </div>
     <div class="main">
       <slot />
@@ -24,7 +24,7 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 export default class LoginFormCard extends Vue {
   /** コンテンツを逆に表示するか */
   @Prop({ type: Boolean, default: false })
-  readonly revert: boolean;
+  readonly reverse: boolean;
 }
 </script>
 
@@ -39,10 +39,11 @@ export default class LoginFormCard extends Vue {
     box-shadow: 0 6px 24px rgba($_black, $_light-lg)
     border-radius: $layout-radius-md
 
-  &.-revert
+  &.-reverse
     flex-direction: row-reverse
 
   & > .side
+    position: relative
     display: flex
     flex-direction: column
     justify-content: center
@@ -52,9 +53,9 @@ export default class LoginFormCard extends Vue {
   & > .side > .logo
     display: block
     width: 210px
-    margin: 0 auto
+    margin: auto auto 0
 
   & > .main
     flex: 1 0
-    padding: $layout-margin-xlg $layout-margin-md
+    padding: $layout-margin-xlg $layout-margin-lg
 </style>

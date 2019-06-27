@@ -18,8 +18,14 @@
         v-if="errorMessage"
         class="status -danger ion-ios-close-circle-outline"
       />
+      <img
+        v-else-if="loading"
+        class="status -loading"
+        src="~assets/images/common/spinner-primary.svg"
+        alt="Loading"
+      >
       <i
-        v-if="success"
+        v-else-if="success"
         class="status -success ion-ios-checkmark-circle-outline"
       />
     </div>
@@ -34,7 +40,7 @@
         v-else-if="help"
         class="help"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, similique?
+        {{ help }}
       </p>
       <div
         v-if="maxLength > 0"
@@ -73,6 +79,10 @@ export default class AppInput extends Vue {
   /** エラーメッセージ */
   @Prop({ type: String })
   readonly error?: string;
+
+  /** ローディングフラグ */
+  @Prop({ type: Boolean, default: false })
+  readonly loading: boolean;
 
   /** 成功フラグ */
   @Prop({ type: Boolean, default: false })
@@ -126,7 +136,7 @@ export default class AppInput extends Vue {
     margin-top: $layout-margin-xsm
 
   & > .addition > .help
-    margin-right: auto
+    margin-right: 1.5em
     font-size: $font-xsm
     line-height: 1.5
 
@@ -183,4 +193,7 @@ export default class AppInput extends Vue {
 
   & > .status.-danger
     color: $_danger
+
+  & > .status.-loading
+    width: 20px
 </style>

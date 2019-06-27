@@ -51,3 +51,13 @@
 
   +button-theme-disabled(outline)
     opacity: $_light-md
+
+  +button-theme(outline-light)
+    color: $_secondary
+    border: 1px solid rgba($_secondary, $_light-lg)
+
+  +button-theme-hover(outline-light)
+    border-color: rgba($_secondary, $_light-sm)
+
+  +button-theme-disabled(outline-light)
+    opacity: $_light-md
