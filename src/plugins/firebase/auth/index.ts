@@ -15,6 +15,18 @@ class FirebaseAuth {
   ) { } // eslint-disable-line no-empty-function
 
   /**
+   * メールアドレスとパスワードでユーザーを作成する
+   * @param email メールアドレス
+   * @param password パスワード
+   */
+  public async createUserWithEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<firebase.auth.UserCredential> {
+    return this.app.auth().createUserWithEmailAndPassword(email, password);
+  }
+
+  /**
    * メールアドレスとパスワードでログインを行う
    */
   public async signInWithEmailAndPassword(

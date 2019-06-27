@@ -44,18 +44,9 @@ export const actions = {
 
     return user;
   },
-  /** ユーザーを作成する */
-  async createUser(context: Ctx, payload: { id: string; data: UserProfile['Value'] }): Promise<void> {
-    const { id, data } = payload;
-    const user = new UserProfile(id, data);
-    const userCore = new UserCore();
-
-    await Promise.all([user.save(), userCore.save()]);
-  },
 };
 export type Actions = Convertor<typeof actions, {
   'user/fetchUserProfile': 'fetchUserProfile';
-  'user/createUser': 'createUser';
 }>;
 
 export type Store = DefineStoreModule<'user', IState, Getters, Mutations, Actions>;

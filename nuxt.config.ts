@@ -41,7 +41,7 @@ const config: NuxtConfiguration = {
   },
   extensions: ['js', 'ts'],
   mode: 'spa',
-  modules: ['@nuxtjs/style-resources'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/toast'],
   plugins: [
     '~/plugins/constants',
     '~/plugins/router-util/register',
@@ -59,6 +59,10 @@ const config: NuxtConfiguration = {
       '~assets/styles/mixins/*.sass',
       '~assets/styles/base/*.sass',
     ],
+  },
+  toast: {
+    position: 'bottom-right',
+    duration: 5000
   },
   watch: ['~assets/styles/**/*.sass'],
 };

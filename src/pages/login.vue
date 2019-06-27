@@ -11,19 +11,28 @@
             alt="Login"
           >
         </h1>
-        <form @submit.prevent>
+        <form @submit.prevent="onSubmit">
           <div class="login-form">
             <AppInput
               v-model="email"
+              data-vv-as="メールアドレス"
+              name="email"
               class="input"
               placeholder="メールアドレス"
               icon="ios-person"
+              validate="required|email"
+              :error="errors.first('email')"
             />
             <AppInput
               v-model="password"
+              data-vv-as="パスワード"
+              type="password"
+              name="password"
               class="input"
               placeholder="パスワード"
               icon="ios-key"
+              validate="required|min:6|max:50"
+              :error="errors.first('password')"
             />
             <button
               type="submit"
@@ -71,6 +80,7 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import AppInput from '@/components/ui/AppInput.vue';
 import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
+import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
@@ -78,13 +88,41 @@ import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
     LoginFormCard,
   },
   layout: 'minimal',
+  $_veeValidate: { // eslint-disable-line @typescript-eslint/camelcase
+    validator: 'new',
+  },
 })
 export default class LoginPage extends Vue {
+  $store!: RootStore;
+
   /** メールアドレス */
   email = '';
 
   /** パスワード */
   password = '';
+
+  /**
+   * フォームが送信されたときの処理
+   */
+  async onSubmit(): Promise<void> {
+    const isValid = await this.$validator.validateAll();
+
+    if (!isValid) {
+      return;
+    }
+
+    try {
+      await this.$store.dispatch('auth/login', {
+        email: this.email,
+        password: this.password,
+      });
+
+      this.$toast.success('ログインに成功しました');
+      this.$router.replace('/');
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 </script>
 

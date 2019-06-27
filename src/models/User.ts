@@ -3,6 +3,9 @@ import { Base, property } from './util';
 
 /** ユーザープロフィール情報 */
 export class UserProfile extends Base {
+  /** ユーザーのUID */
+  @property uid: string;
+
   /** ユーザー名 */
   @property name: string;
 

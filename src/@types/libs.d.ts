@@ -1,1 +1,7 @@
-declare module 'vue-carousel';
+import { Toasted } from 'vue-toasted';
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $toast: Toasted;
+  }
+}

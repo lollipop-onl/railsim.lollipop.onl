@@ -10,7 +10,7 @@
             alt="Sign-up"
           >
         </h1>
-        <form @submit.prevent>
+        <form @submit.prevent="onSubmit">
           <div class="signup-form">
             <AppInput
               v-model="email"
@@ -25,6 +25,7 @@
             <AppInput
               v-model="password"
               name="password"
+              type="password"
               class="input"
               placeholder="パスワード"
               icon="ios-key"
@@ -84,6 +85,7 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import AppInput from '@/components/ui/AppInput.vue';
 import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
+import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
@@ -96,6 +98,8 @@ import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
   },
 })
 export default class SignUpPage extends Vue {
+  $store!: RootStore;
+
   /** メールアドレス */
   email = '';
 
@@ -104,6 +108,37 @@ export default class SignUpPage extends Vue {
 
   /** ユーザーID */
   userId = '';
+
+  /** ローディング */
+  isLoading = false;
+
+  /**
+   * フォームが送信されたときの処理
+   */
+  async onSubmit(): Promise<void> {
+    const isValid = await this.$validator.validateAll();
+
+    if (!isValid) {
+      return;
+    }
+
+    this.isLoading = true;
+
+    try {
+      await this.$store.dispatch('auth/signupUser', {
+        email: this.email,
+        password: this.password,
+        userId: this.userId,
+      });
+
+      this.$toast.success('ユーザー登録ありがとうございました！');
+      this.$router.replace('/');
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 }
 </script>
 

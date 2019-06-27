@@ -24,12 +24,12 @@
           <p>Welcome to authorized user!</p>
         </template>
         <template v-else>
-          <button
+          <n-link
             class="button-base -block -outline"
-            @click="$store.dispatch('auth/login')"
+            to="/login"
           >
             ログイン
-          </button>
+          </n-link>
           <p class="help">
             ログインするとお気に入りや拍手など限定機能を利用できます。
           </p>

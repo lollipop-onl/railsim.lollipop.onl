@@ -28,7 +28,9 @@ export default class LogoutPage extends Vue {
 
   /** ライフサイクル */
   mounted(): void {
-    this.logout();
+    this.$firebase.on('initialized', () => {
+      this.logout();
+    });
   }
 
   /** ログアウトする */

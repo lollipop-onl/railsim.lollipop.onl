@@ -91,7 +91,7 @@ class Firebase {
       Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, userProfile, uid));
 
       if (!this.isInitialized) {
-        this.isInitialized = false;
+        this.isInitialized = true;
         Firebase.listeners.initialized.forEach(cb => cb());
       }
     });
