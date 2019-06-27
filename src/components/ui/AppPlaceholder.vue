@@ -1,6 +1,7 @@
 <template>
   <div
-    :class="{'app-placeholder': true, '-text': length != null}"
+    class="app-placeholder"
+    :class="{'-text': length != null}"
     :style="style"
   />
 </template>

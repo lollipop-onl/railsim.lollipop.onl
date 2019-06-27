@@ -20,15 +20,20 @@
     <hr class="separation">
     <div class="container">
       <template v-if="isInitialized">
-        <button
-          class="button-base -block -outline"
-          @click="$store.dispatch('auth/login')"
-        >
-          ログイン
-        </button>
-        <p class="help">
-          ログインするとお気に入りや拍手など限定機能を利用できます。
-        </p>
+        <template v-if="$store.state.auth.loggedIn">
+          <p>Welcome to authorized user!</p>
+        </template>
+        <template v-else>
+          <button
+            class="button-base -block -outline"
+            @click="$store.dispatch('auth/login')"
+          >
+            ログイン
+          </button>
+          <p class="help">
+            ログインするとお気に入りや拍手など限定機能を利用できます。
+          </p>
+        </template>
       </template>
       <template v-else>
         <img

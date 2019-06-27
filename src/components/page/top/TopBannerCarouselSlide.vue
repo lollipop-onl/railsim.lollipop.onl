@@ -5,7 +5,10 @@
       src="~/assets/images/dev/banner.png"
       alt="Banner"
     >
-    <div :class="{'banner-content': true, '-active': active }">
+    <div
+      class="banner-content"
+      :class="{'-active': active }"
+    >
       <div class="label">
         by しもさんしぃ
       </div>

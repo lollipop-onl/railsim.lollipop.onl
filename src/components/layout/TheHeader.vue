@@ -13,7 +13,8 @@
     <div class="header-avatar">
       <button
         v-if="auth.initialized && auth.loggedIn"
-        :class="{'avatar': true, '-open': isOpenMenu}"
+        class="avatar"
+        :class="{'-open': isOpenMenu}"
         @click="openMenu"
       >
         <img
