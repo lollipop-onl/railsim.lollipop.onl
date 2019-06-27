@@ -51,8 +51,8 @@ export default class ErrorLayout extends Vue {
     text-align: center
 
   & > .footer > .link
-    color: $_primary
     font-size: $font-md
+    color: $_primary
     text-decoration: underline
 
   & > .footer > .link:hover

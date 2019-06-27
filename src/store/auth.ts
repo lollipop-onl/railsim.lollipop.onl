@@ -4,13 +4,15 @@ import {
   DefineActionContext,
   DefineStoreModule,
 } from '@lollipop-onl/vuex-typesafe-helper';
-import { UserProfile } from '@/models';
+import { UserProfile, UIDLink } from '@/models';
 
 export interface IState {
   /** 初期化されているか */
   initialized: boolean;
   /** ログインしているか */
   loggedIn: boolean;
+  /** ユーザーID */
+  userId?: string;
   /** ログインユーザーのプロフィール */
   profile?: UserProfile['Value'];
 }
@@ -38,6 +40,12 @@ export const mutations = {
     state.loggedIn = status;
   },
   /**
+   * ユーザーIDを更新する
+   */
+  updateUserId(state: IState, userId: string) {
+    state.userId = userId;
+  },
+  /**
    * ユーザーのプロフィールを更新する
    */
   updateProfile(state: IState, profile?: UserProfile['Value']) {
@@ -47,6 +55,7 @@ export const mutations = {
 export type Mutations = Convertor<typeof mutations, {
   'auth/completeInitialization': 'completeInitialization';
   'auth/updateLoginStatus': 'updateLoginStatus';
+  'auth/updateUserId': 'updateUserId';
   'auth/updateProfile': 'updateProfile';
 }>;
 
@@ -69,11 +78,19 @@ export const actions = {
         return;
       }
 
+      const { uid } = user;
+      const uidLink = new UIDLink(uid);
+
+      uidLink.userId = userId;
+
       const newUser = new UserProfile(userId);
 
-      newUser.uid = user.uid;
+      newUser.name = userId;
 
-      await newUser.save();
+      await Promise.all([
+        uidLink.save(),
+        newUser.save(),
+      ]);
 
       commit('updateProfile', newUser.value());
     } catch (err) {
@@ -112,11 +129,34 @@ export const actions = {
 
     commit('updateLoginStatus', false);
   },
+  /**
+   * プロフィールを更新する
+   */
+  async updateUserProfile({ state, commit }: Ctx, payload: UserProfile['Value']): Promise<void> {
+    const { userId } = state;
+
+    if (!userId) {
+      return;
+    }
+
+    const user = new UserProfile(userId, {});
+
+    user.name = payload.name;
+    user.bio = payload.bio;
+
+    await user.update();
+
+    const updatedUserProfile = await UserProfile.get(userId);
+    const value = updatedUserProfile && updatedUserProfile.value();
+
+    commit('updateProfile', value);
+  },
 };
 export type Actions = Convertor<typeof actions, {
   'auth/signupUser': 'signupUser';
   'auth/login': 'login';
   'auth/logout': 'logout';
+  'auth/updateUserProfile': 'updateUserProfile';
 }>;
 
 export type Store = DefineStoreModule<'auth', IState, Getters, Mutations, Actions>;

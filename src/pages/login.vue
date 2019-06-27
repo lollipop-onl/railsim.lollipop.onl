@@ -105,6 +105,7 @@ export default class LoginPage extends Vue {
    * フォームが送信されたときの処理
    */
   async onSubmit(): Promise<void> {
+    const { state, dispatch } = this.$store;
     const isValid = await this.$validator.validateAll();
 
     if (!isValid) {
@@ -112,12 +113,19 @@ export default class LoginPage extends Vue {
     }
 
     try {
-      await this.$store.dispatch('auth/login', {
+      await dispatch('auth/login', {
         email: this.email,
         password: this.password,
       });
 
-      this.$toast.success('ログインに成功しました');
+      const { profile } = state.auth;
+
+      if (profile) {
+        this.$toast.success(`ようこそ、${profile.name}さん`);
+      } else {
+        this.$toast.success('ログインに成功しました');
+      }
+
       this.$router.replace('/');
     } catch (err) {
       console.log(err);
@@ -178,8 +186,9 @@ export default class LoginPage extends Vue {
   &
     display: table
     margin: $layout-margin-xlg auto 0
-    font-size: $font-sm
-    color: $_text-link
+    font-size: $font-md
+    color: $_primary
+    text-decoration: underline
 
   &:hover
     text-decoration: none

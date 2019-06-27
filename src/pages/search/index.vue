@@ -4,9 +4,8 @@
     <form @submit.prevent="onSubmit">
       <AppForm>
         <AppFormRow title="キーワード">
-          <AppFormInput
+          <AppInput
             v-model="keyword"
-            block
             placeholder="検索キーワード"
           />
         </AppFormRow>
@@ -79,7 +78,7 @@ import AppHeading from '@/components/ui/AppHeading.vue';
 import AppPluginTag from '@/components/ui/AppPluginTag.vue';
 import AppForm from '@/components/ui/AppForm.vue';
 import AppFormRow from '@/components/ui/AppFormRow.vue';
-import AppFormInput from '@/components/ui/AppFormInput.vue';
+import AppInput from '@/components/ui/AppInput.vue';
 import { arrayify, parseSearchQuery, stringifySearchQuery } from '@/utils';
 
 @Component({
@@ -88,7 +87,7 @@ import { arrayify, parseSearchQuery, stringifySearchQuery } from '@/utils';
     AppPluginTag,
     AppForm,
     AppFormRow,
-    AppFormInput,
+    AppInput,
   },
   layoutProps(this: SearchPage) {
     return {

@@ -7,7 +7,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import FirebaseAuth from '@/plugins/firebase/auth';
 import { IFirebaseConfig, FirebaseEventName } from '@/types/firebase';
-import { UserProfile } from '@/models';
+import { UserProfile, UIDLink } from '@/models';
 import { initialize } from '@/models/util';
 
 class Firebase {
@@ -85,10 +85,10 @@ class Firebase {
 
     this.app.auth().onAuthStateChanged(async (user) => {
       const uid = user && user.uid;
-      const profile = uid && (await UserProfile.query().where('uid', '==', uid).get());
-      const userProfile = profile && profile.docs.length > 0 && profile.docs[0].data();
+      const uidLink = uid && await UIDLink.get(uid);
+      const userId = uidLink && uidLink.userId;
 
-      Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, userProfile, uid));
+      Firebase.listeners.onAuthStateChanged.forEach(cb => cb(!!user, userId, uid));
 
       if (!this.isInitialized) {
         this.isInitialized = true;

@@ -36,7 +36,7 @@ export default class LoginFormCard extends Vue {
     max-width: calc(100% - #{$layout-margin-md * 2})
     margin: 0 auto
     overflow: hidden
-    box-shadow: 0 6px 24px rgba($_black, $_light-lg)
+    box-shadow: 0 6px 24px -10px rgba($_black, $_light-lg)
     border-radius: $layout-radius-md
 
   &.-reverse

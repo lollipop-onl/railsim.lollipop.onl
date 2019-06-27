@@ -42,7 +42,9 @@
               :max-length="20"
               validate="required|min:6|max:20"
               help="ユーザーには半角英数字と_が利用できます。一度設定したら変更することはできません"
-              :error="errors.first('userId')"
+              :error="isUnavailableUserId ? 'このユーザーIDは利用できません' : errors.first('userId')"
+              :success="userId !== '' && !isUnavailableUserId"
+              :loading="isCheckingUserId"
             />
             <button
               type="submit"
@@ -82,10 +84,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { debounce } from 'helpful-decorators';
+import { Component, Watch, Vue } from 'nuxt-property-decorator';
 import AppInput from '@/components/ui/AppInput.vue';
 import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
 import { RootStore } from '@/types/vuex';
+import { UserProfile } from '@/models';
 
 @Component({
   components: {
@@ -111,6 +115,41 @@ export default class SignUpPage extends Vue {
 
   /** ローディング */
   isLoading = false;
+
+  /** ユーザーIDチェック中かどうか */
+  isCheckingUserId = false;
+
+  /** 利用できないユーザーIDか */
+  isUnavailableUserId = false;
+
+  /** ユーザーIdが入力されたら利用可能かをチェックする */
+  @Watch('userId', { immediate: true })
+  @debounce(1000)
+  async checkUserId(): Promise<void> {
+    this.isCheckingUserId = true;
+
+    try {
+      if (this.userId.length < 6) {
+        this.isUnavailableUserId = false;
+
+        return;
+      }
+
+      const user = await UserProfile.get(this.userId);
+
+      if (!user) {
+        this.isUnavailableUserId = false;
+
+        return;
+      }
+
+      this.isUnavailableUserId = user.isExists;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.isCheckingUserId = false;
+    }
+  }
 
   /**
    * フォームが送信されたときの処理
@@ -196,8 +235,9 @@ export default class SignUpPage extends Vue {
   &
     display: table
     margin: $layout-margin-xlg auto 0
-    font-size: $font-sm
-    color: $_text-link
+    font-size: $font-md
+    color: $_primary
+    text-decoration: underline
 
   &:hover
     text-decoration: none

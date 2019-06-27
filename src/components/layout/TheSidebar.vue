@@ -21,7 +21,12 @@
     <div class="container">
       <template v-if="isInitialized">
         <template v-if="$store.state.auth.loggedIn">
-          <p>Welcome to authorized user!</p>
+          <n-link
+            class="button-base -block -outline"
+            to="/mypage"
+          >
+            マイページ
+          </n-link>
         </template>
         <template v-else>
           <n-link

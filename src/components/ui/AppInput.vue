@@ -16,16 +16,16 @@
         class="icon"
         :class="`ion-${icon}`"
       />
-      <i
-        v-if="errorMessage"
-        class="status -danger ion-ios-close-circle-outline"
-      />
       <img
-        v-else-if="loading"
+        v-if="loading"
         class="status -loading"
         src="~assets/images/common/spinner-primary.svg"
         alt="Loading"
       >
+      <i
+        v-else-if="errorMessage"
+        class="status -danger ion-ios-close-circle-outline"
+      />
       <i
         v-else-if="success"
         class="status -success ion-ios-checkmark-circle-outline"
@@ -103,7 +103,7 @@ export default class AppInput extends Vue {
   readonly success: boolean;
 
   /** モデルを定義 */
-  @Model('input', { type: String, required: true })
+  @Model('input', { type: String, default: '' })
   readonly value: string;
 
   /** Wrapper of $listeners */
@@ -183,6 +183,9 @@ export default class AppInput extends Vue {
 
   & > .field.-icon
     padding-left: $layout-margin-lg
+
+  & > .field.-status
+    padding-right: $layout-margin-lg
 
   & > .field::placeholder
     color: rgba($_primary, $_light-md)

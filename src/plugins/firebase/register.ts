@@ -34,13 +34,27 @@ export default (context: Context, inject: Function) => {
   );
 
   Firebase.listeners.onAuthStateChanged.push(
-    (loggedIn: boolean, user?: UserProfile) => {
+    async (loggedIn: boolean, userId?: string, uid?: string) => {
       const { state, commit } = store;
 
-      if (!state.auth.initialized) commit('auth/completeInitialization');
+      if (!state.auth.initialized) {
+        commit('auth/completeInitialization');
+      }
+
+      console.log(userId);
+
+      if (userId) {
+        const userProfile = await UserProfile.get(userId);
+
+        console.log(userProfile);
+
+        if (userProfile) {
+          commit('auth/updateUserId', userId);
+          commit('auth/updateProfile', userProfile.value());
+        }
+      }
 
       commit('auth/updateLoginStatus', loggedIn);
-      commit('auth/updateProfile', user && user);
     },
   );
 };

@@ -3,9 +3,6 @@ import { Base, property } from './util';
 
 /** ユーザープロフィール情報 */
 export class UserProfile extends Base {
-  /** ユーザーのUID */
-  @property uid: string;
-
   /** ユーザー名 */
   @property name: string;
 
@@ -23,4 +20,10 @@ export class UserProfile extends Base {
 export class UserCore extends Base {
   /** アカウントがアクティブかどうか */
   @property isActive = false;
+}
+
+/** uidとユーザーIDの関連付け */
+export class UIDLink extends Base {
+  /** ユーザーのID */
+  @property userId: string;
 }
