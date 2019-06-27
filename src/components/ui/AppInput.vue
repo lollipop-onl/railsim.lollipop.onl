@@ -2,11 +2,13 @@
   <div class="app-input">
     <div class="app-input-field">
       <input
+        v-validate:value="validate"
         v-bind="$attrs"
         :type="type"
         class="field"
         :class="{'-icon': icon, '-status': errorMessage}"
         :value="value"
+        :name="name"
         v-on="listeners"
       >
       <i
@@ -55,14 +57,22 @@
 
 <script lang="ts">
 import {
-  Component, Emit, Model, Prop, Vue,
+  Component, Emit, Inject, Model, Prop, Vue,
 } from 'nuxt-property-decorator';
+import { Validator } from 'vee-validate';
 
 @Component
 export default class AppInput extends Vue {
+  /** VeeValidate */
+  @Inject() readonly $validator: Validator;
+
   /** Input Type Attribute */
   @Prop({ type: String, default: 'text' })
   readonly type: string;
+
+  /** Input Name Attribute */
+  @Prop({ type: String, required: true })
+  readonly name: string;
 
   /** アイコン */
   @Prop({ type: String })
@@ -75,6 +85,10 @@ export default class AppInput extends Vue {
   /** ヘルプメッセージ */
   @Prop({ type: String })
   readonly help?: string;
+
+  /** VeeValidate Rules */
+  @Prop({ type: [String, Object], default: '' })
+  public validate: string | Record<string, any>;
 
   /** エラーメッセージ */
   @Prop({ type: String })

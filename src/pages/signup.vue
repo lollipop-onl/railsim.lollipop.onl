@@ -14,25 +14,34 @@
           <div class="signup-form">
             <AppInput
               v-model="email"
+              data-vv-as="メールアドレス"
+              name="email"
               class="input"
               placeholder="メールアドレス"
               icon="ios-person"
-              :max-length="100"
+              validate="required|email"
+              :error="errors.first('email')"
             />
             <AppInput
               v-model="password"
+              name="password"
               class="input"
               placeholder="パスワード"
               icon="ios-key"
+              validate="required|min:6|max:50"
               :max-length="50"
+              :error="errors.first('password')"
             />
             <AppInput
               v-model="userId"
+              name="userId"
               class="input"
               placeholder="ユーザーID"
               icon="ios-at"
               :max-length="20"
+              validate="required|min:6|max:20"
               help="ユーザーには半角英数字と_が利用できます。一度設定したら変更することはできません"
+              :error="errors.first('userId')"
             />
             <button
               type="submit"
@@ -82,6 +91,9 @@ import LoginFormCard from '@/components/page/login/LoginFormCard.vue';
     LoginFormCard,
   },
   layout: 'minimal',
+  $_veeValidate: { // eslint-disable-line @typescript-eslint/camelcase
+    validator: 'new',
+  },
 })
 export default class SignUpPage extends Vue {
   /** メールアドレス */

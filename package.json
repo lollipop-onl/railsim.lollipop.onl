@@ -31,7 +31,8 @@
     "nuxt": "^2.8.1",
     "nuxt-property-decorator": "^2.3.0",
     "reset.css": "^2.0.2",
-    "ts-node": "^8.3.0"
+    "ts-node": "^8.3.0",
+    "vee-validate": "^2.2.11"
   },
   "devDependencies": {
     "@nuxt/typescript": "^2.8.1",

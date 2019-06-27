@@ -46,6 +46,7 @@ const config: NuxtConfiguration = {
     '~/plugins/constants',
     '~/plugins/router-util/register',
     '~/plugins/firebase/register',
+    '~/plugins/libraries',
   ],
   router: {
     linkActiveClass: '-active',
