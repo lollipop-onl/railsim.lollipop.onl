@@ -6,7 +6,7 @@
       target="_blank"
       rel="noopener"
     >
-      ダウンロード
+      ダウンロードページへアクセス
     </a>
   </div>
 </template>
@@ -19,8 +19,8 @@ import { RootStore } from '@/types/vuex';
   layoutProps(this: PluginDetailPage) {
     return {
       breadcrumbs: [
-        { title: 'しもさんしぃ', to: '/author/simochee' },
-        { title: this.plugin && this.plugin.name, to: this.plugin && `/plugin/${this.plugin.id}` },
+        { title: this.user.name, to: this.user.link, loading: this.isLoading },
+        { title: this.plugin.name, to: this.plugin.link, loading: this.isLoading },
         { title: 'ダウンロード' },
       ],
     };
@@ -29,21 +29,52 @@ import { RootStore } from '@/types/vuex';
 export default class PluginDetailPage extends Vue {
   $store!: RootStore;
 
+  /** ローディング状態 */
+  isLoading = false;
+
   /** プラグインデータ */
   get plugin() {
     const { pluginId } = this.$route.params;
+    const { [pluginId]: plugin } = this.$store.state.plugin.pluginData;
 
-    return this.$store.state.plugin.pluginData[pluginId];
+    if (!plugin) {
+      return { name: '', link: '', userId: '' };
+    }
+
+    return {
+      ...plugin,
+      link: `/plugin/${plugin.id}`,
+    };
+  }
+
+  /** 投稿者のユーザープロフィール */
+  get user() {
+    const { userId } = this.plugin;
+    const { [userId]: user } = this.$store.state.user.userData;
+
+    if (!user) {
+      return { name: '', link: '' };
+    }
+
+    return {
+      ...user,
+      link: `/author/${user.id}`,
+    };
   }
 
   async mounted(): Promise<void> {
     const { pluginId } = this.$route.params;
 
+    this.isLoading = true;
+
     try {
       await this.$store.dispatch('plugin/fetchPlugin', pluginId);
+      await this.$store.dispatch('user/fetchUserProfile', this.plugin.userId);
     } catch (err) {
       // Do nothing
       this.$nuxt.error({ statusCode: 404 });
+    } finally {
+      this.isLoading = false;
     }
   }
 }

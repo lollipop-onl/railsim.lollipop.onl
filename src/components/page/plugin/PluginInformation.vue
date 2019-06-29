@@ -4,20 +4,21 @@
       作者
     </div>
     <n-link
+      v-if="profile"
       class="plugin-author"
-      to="/author/simochee"
+      :to="`/author/${profile.id}`"
     >
       <div class="avatar">
         <img
           class="image"
-          src="~assets/images/dev/avatar.png"
+          :src="profile.avatar"
         >
       </div>
       <div class="username">
-        しもさんしぃ
+        {{ profile.name }}
       </div>
       <div class="id">
-        @simochee
+        @{{ profile.id }}
       </div>
     </n-link>
     <hr class="separation">
@@ -25,13 +26,13 @@
       登録タグ
     </div>
     <div class="plugin-tags">
-      <AppPluginTag category>
-        施設
-      </AppPluginTag>
-      <AppPluginTag>港湾</AppPluginTag>
-      <AppPluginTag>船舶</AppPluginTag>
-      <AppPluginTag>期間限定</AppPluginTag>
-      <AppPluginTag>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea maiores vero aliquid vel! Quasi voluptates illum recusandae vel minus tempora voluptatem facere, saepe autem doloremque praesentium asperiores, quod perspiciatis officiis.</AppPluginTag>
+      <template v-for="categoryId in plugin.category">
+        <AppPluginTag
+          :key="categoryId"
+          category
+          :category-id="categoryId"
+        />
+      </template>
     </div>
     <hr class="separation">
     <dl class="plugin-history">
@@ -39,28 +40,54 @@
         初回公開日時
       </dt>
       <dd class="value">
-        2019/06/28 12:00
+        {{ plugin.createdAt.seconds | dayjs('YYYY/MM/DD HH:mm') }}
       </dd>
-      <dt class="label">
-        更新日時
-      </dt>
-      <dd class="value">
-        2019/07/18 19:10
-      </dd>
+      <template v-if="isUpdated">
+        <dt class="label">
+          更新日時
+        </dt>
+        <dd class="value">
+          {{ plugin.updatedAt.seconds | dayjs('YYYY/MM/DD HH:mm') }}
+        </dd>
+      </template>
     </dl>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import AppPluginTag from '@/components/ui/AppPluginTag.vue';
+import { dayjs } from '@/plugins/filters';
+import { Plugin, UserProfile } from '@/models';
 
 @Component({
   components: {
     AppPluginTag,
   },
+  filters: {
+    dayjs,
+  },
 })
 export default class PluginInformation extends Vue {
+  /** プラグイン */
+  @Prop({ type: Object, required: true })
+  plugin: Plugin['Value'];
+
+  /** ユーザー情報 */
+  @Prop({ type: Object })
+  profile?: UserProfile['Value'];
+
+  /** 更新されているか */
+  get isUpdated(): boolean {
+    const { createdAt, updatedAt } = this.plugin;
+
+    if (!updatedAt) {
+      return false;
+    }
+
+
+    return createdAt.seconds !== updatedAt.seconds;
+  }
 }
 </script>
 

@@ -8,9 +8,9 @@
         トップ
       </n-link>
     </li>
-    <template v-for="({ title, to, loading }) in breadcrumbs">
+    <template v-for="({ title, to, loading }, i) in breadcrumbs">
       <li
-        :key="title"
+        :key="i"
         class="item"
       >
         <div

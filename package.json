@@ -26,6 +26,8 @@
     "@lollipop-onl/vuex-typesafe-helper": "^0.2.6",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "@nuxtjs/toast": "^3.2.1",
+    "autosize": "^4.0.2",
+    "dayjs": "^1.8.14",
     "firebase": "^6.2.2",
     "helpful-decorators": "^2.0.4",
     "i": "^0.3.6",
@@ -41,6 +43,7 @@
   "devDependencies": {
     "@nuxt/typescript": "^2.8.1",
     "@nuxtjs/style-resources": "^0.1.2",
+    "@types/autosize": "^3.0.6",
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",

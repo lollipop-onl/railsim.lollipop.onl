@@ -10,7 +10,7 @@
     <hr class="separation">
     <n-link
       class="link"
-      to="/mypage/plugin/publish"
+      to="/mypage/plugin/new"
       @click.native="navigate"
     >
       プラグイン投稿

@@ -22,6 +22,7 @@ rules:
   no-param-reassign: "off"
   no-useless-constructor: "off"
   no-shadow: "off"
+  consistent-return: "off"
   # @typescript-eslint
   "@typescript-eslint/class-name-casing": error # クラス名をパスカルケースに強制
   "@typescript-eslint/interface-name-prefix": "off" # インターフェースのプレフィックスを制限しない

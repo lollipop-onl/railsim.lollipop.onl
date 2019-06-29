@@ -3,9 +3,8 @@
     <h1 class="title">
       {{ title }}
     </h1>
-    <div class="content">
-      <slot />
-    </div>
+    <!-- eslint-disable-next-line -->
+    <div class="content"><slot /></div>
   </section>
 </template>
 
@@ -22,6 +21,7 @@ export default class PluginIntroduction extends Vue {
 <style lang="sass" scoped>
 .plugin-introduction
   & > .title
+    margin-bottom: $layout-margin-md
     font-size: $font-xlg
     line-height: 1.5
 

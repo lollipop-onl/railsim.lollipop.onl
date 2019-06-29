@@ -1,16 +1,18 @@
 <template>
   <div class="app-input">
     <div class="app-input-field">
-      <input
+      <textarea
+        :is="multiline ? 'textarea' : 'input'"
+        ref="field"
         v-validate:value="validate"
         v-bind="$attrs"
         :type="type"
         class="field"
-        :class="{'-icon': icon, '-status': errorMessage}"
+        :class="{'-icon': icon, '-status': errorMessage, '-multiline': multiline}"
         :value="value"
         :name="name"
         v-on="listeners"
-      >
+      />
       <i
         v-if="icon"
         class="icon"
@@ -56,6 +58,7 @@
 </template>
 
 <script lang="ts">
+import autosize from 'autosize';
 import {
   Component, Emit, Inject, Model, Prop, Vue,
 } from 'nuxt-property-decorator';
@@ -85,6 +88,10 @@ export default class AppInput extends Vue {
   /** ヘルプメッセージ */
   @Prop({ type: String })
   readonly help?: string;
+
+  /** 複数行の入力できるようにするか */
+  @Prop({ type: Boolean, default: false })
+  readonly multiline: boolean;
 
   /** VeeValidate Rules */
   @Prop({ type: [String, Object], default: '' })
@@ -127,15 +134,35 @@ export default class AppInput extends Vue {
     return '';
   }
 
+  /** ライフサイクル */
+  mounted(): void {
+    if (!this.multiline) {
+      return;
+    }
+
+    const { field } = this.$refs;
+
+    if (!(field instanceof Element)) {
+      return;
+    }
+
+    autosize(field);
+  }
+
   /** inputイベントをEmitする */
   @Emit() input(e: Event): string {
-    if (!e.target) return '';
+    const { target } = e;
 
-    if (!(e.target instanceof HTMLInputElement)) {
+    if (!target) return '';
+
+    if (
+      !(target instanceof HTMLInputElement)
+      && !(target instanceof HTMLTextAreaElement)
+    ) {
       return '';
     }
 
-    const { value } = e.target;
+    const { value } = target;
 
     return value;
   }
@@ -169,7 +196,6 @@ export default class AppInput extends Vue {
 .app-input-field
   &
     position: relative
-    height: 42px
 
   & > .field
     box-sizing: border-box
@@ -186,6 +212,11 @@ export default class AppInput extends Vue {
 
   & > .field.-status
     padding-right: $layout-margin-lg
+
+  & > .field.-multiline
+    min-height: calc((5em * 1.5) + 22px)
+    max-height: calc((20em * 1.5) + 22px)
+    resize: none
 
   & > .field::placeholder
     color: rgba($_primary, $_light-md)
