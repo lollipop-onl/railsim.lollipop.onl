@@ -18,16 +18,31 @@ export default class LayoutMixin extends Vue {
   /** 更新をかけるタイムスタンプ */
   public timestamp = 0;
 
+  /** ストアの購読をやめるための関数 */
+  private unsubscribeStore: Function | void;
+
+  /** ナビゲーションの購読をやめるための関数 */
+  private unsubscribeNavigation: Function | void;
+
   /** Lifecycle event */
   public mounted(): void {
     this.timestamp = Date.now();
 
-    this.$routerUtil.addHook('afterEach', this.onNavigation);
+    this.unsubscribeStore = this.$store.subscribe(() => {
+      this.timestamp = Date.now();
+    });
+    this.unsubscribeNavigation = this.$router.afterEach(this.onNavigation);
   }
 
   /** Lifecycle event */
   public beforeDestroy(): void {
-    this.$routerUtil.removeHook('afterEach', this.onNavigation);
+    if (this.unsubscribeStore) {
+      this.unsubscribeStore();
+    }
+
+    if (this.unsubscribeNavigation) {
+      this.unsubscribeNavigation();
+    }
   }
 
   /** Layout Props */

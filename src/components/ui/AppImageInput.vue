@@ -1,26 +1,28 @@
 <template>
-  <label class="app-file-input">
-    <input
-      type="file"
-      class="field"
-      v-bind="$attrs"
-      v-on="listeners"
-    >
-    <div
-      v-if="previewData || initialSrc"
-      class="preview"
-    >
-      <img
-        :src="previewData || initialSrc"
-        class="image"
+  <div class="app-file-input">
+    <label class="dummy-field">
+      <input
+        type="file"
+        class="field"
+        v-bind="$attrs"
+        v-on="listeners"
       >
-    </div>
-    <div
-      v-else
-      class="empty"
-    >
-      <i class="icon ion-md-images" />
-    </div>
+      <div
+        v-if="previewData || initialSrc"
+        class="preview"
+      >
+        <img
+          :src="previewData || initialSrc"
+          class="image"
+        >
+      </div>
+      <div
+        v-else
+        class="empty"
+      >
+        <i class="icon ion-md-images" />
+      </div>
+    </label>
     <div class="addition">
       <p
         v-if="errorMessage"
@@ -37,7 +39,7 @@
         {{ limit | bytes }}
       </div>
     </div>
-  </label>
+  </div>
 </template>
 
 <script lang="ts">
@@ -167,19 +169,39 @@ export default class AppImageInput extends Vue {
 
 <style lang="sass" scoped>
 .app-file-input
+  & > .addition
+    display: flex
+    width: 100%
+    margin-top: $layout-margin-xsm
+
+  & > .addition > .help
+    margin-right: 1.5em
+    font-size: $font-xsm
+    line-height: 1.5
+
+  & > .addition > .help.-danger
+    color: $_danger
+
+  & > .addition > .counter
+    flex-shrink: 0
+    margin-left: auto
+    font-size: $font-xsm
+    line-height: 1.5
+
+  & > .addition > .counter.-danger
+    color: $_danger
+
+.dummy-field
   &
     position: relative
     display: block
+    cursor: pointer
 
   & > .field
     position: absolute
     top: 0
     left: 0
-    z-index: 1
-    width: 100%
-    height: 100%
-    opacity: 0
-    cursor: pointer
+    visibility: hidden
 
   & > .empty
     position: relative
@@ -206,25 +228,4 @@ export default class AppImageInput extends Vue {
     max-width: 100%
     border-radius: $layout-radius-md
 
-  & > .addition
-    display: flex
-    width: 100%
-    margin-top: $layout-margin-xsm
-
-  & > .addition > .help
-    margin-right: 1.5em
-    font-size: $font-xsm
-    line-height: 1.5
-
-  & > .addition > .help.-danger
-    color: $_danger
-
-  & > .addition > .counter
-    flex-shrink: 0
-    margin-left: auto
-    font-size: $font-xsm
-    line-height: 1.5
-
-  & > .addition > .counter.-danger
-    color: $_danger
 </style>

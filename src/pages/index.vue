@@ -2,16 +2,13 @@
   <div class="index-page">
     <TopBannerCarousel class="carousel" />
     <AppHeading
-      link-to="#"
+      link-to="/test"
       link-text="すべてを表示"
     >
       新着プラグイン
     </AppHeading>
     <AppPluginList />
     <AppSeparation />
-    <button @click="createUser">
-      Create user.
-    </button>
     <AppHeading
       link-to="#"
       link-text="すべてを表示"
@@ -40,16 +37,6 @@ import { RootStore } from '~/types/vuex';
 })
 export default class IndexPage extends Vue {
   $store!: RootStore;
-
-  async createUser(): Promise<void> {
-    await this.$store.dispatch('user/createUser', {
-      id: 'simochee',
-      data: {
-        name: 'Ryoya Tamura',
-        avatar: 'http://placehold.jp/320x320.png',
-      },
-    });
-  }
 }
 </script>
 

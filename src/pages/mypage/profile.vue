@@ -39,7 +39,7 @@
           />
         </AppFormRow>
         <button
-          class="button-base -primary -block"
+          class="submit-button"
           type="submit"
         >
           変更を保存
@@ -110,6 +110,11 @@ export default class MypageProfilePage extends Vue {
 
       await this.$store.dispatch('auth/updateUserProfile', this.editingProfile);
 
+      this.$store.commit('auth/updateProfile', this.editingProfile);
+
+      this.avatarImage = null;
+      this.heroImage = null;
+
       this.$toast.success('ユーザープロフィールを更新しました');
     } catch (err) {
       this.$toast.error('エラーが発生しました');
@@ -150,4 +155,12 @@ export default class MypageProfilePage extends Vue {
 </script>
 
 <style lang="sass" scoped>
+.submit-button
+  &
+    @extend .button-base
+    @extend .button-base.-primary
+    @extend .button-base.-block
+    width: 216px
+    max-width: 100%
+    margin: $layout-margin-lg auto 0
 </style>

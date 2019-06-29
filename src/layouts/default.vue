@@ -1,6 +1,10 @@
 <template>
   <div class="default-layout">
-    <TheHeader />
+    <TheHeader
+      :profile="$store.state.auth.profile"
+      :initialized="$store.state.auth.initialized"
+      :logged-in="$store.state.auth.loggedIn"
+    />
     <div class="container">
       <aside class="sidebar">
         <TheSidebar />

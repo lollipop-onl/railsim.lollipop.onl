@@ -12,19 +12,19 @@
     </n-link>
     <div class="header-avatar">
       <button
-        v-if="auth.initialized && auth.loggedIn"
+        v-if="initialized && loggedIn"
         class="avatar"
         :class="{'-open': isOpenMenu}"
         @click="openMenu"
       >
         <img
-          src="~assets/images/dev/avatar.png"
+          :src="avatar"
           class="image"
         >
         <i class="icon ion-md-arrow-dropdown" />
       </button>
       <AppPlaceholder
-        v-if="!auth.initialized"
+        v-if="!initialized"
         class="placeholder"
       />
       <transition name="avatarMenu">
@@ -40,10 +40,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import {
+  Component, Prop, Vue,
+} from 'nuxt-property-decorator';
 import TheHeaderMenu from '@/components/layout/TheHeaderMenu.vue';
 import AppPlaceholder from '@/components/ui/AppPlaceholder.vue';
 import { outside } from '@/plugins/directives';
+import { UserProfile } from '@/models';
 import { RootStore } from '@/types/vuex';
 
 @Component({
@@ -61,9 +64,25 @@ export default class TheHeader extends Vue {
   /** 会員メニューを開くか */
   isOpenMenu = false;
 
-  /** 初期化中かどうか */
-  get auth() {
-    return this.$store.state.auth;
+  /** 初期化済みかどうか */
+  @Prop({ type: Boolean, required: true })
+  initialized: boolean;
+
+  /** ログイン中かどうか */
+  @Prop({ type: Boolean, required: true })
+  loggedIn: boolean;
+
+  /** ユーザープロフィール */
+  @Prop({ type: Object })
+  profile?: UserProfile['Value'];
+
+  /** アバター画像 */
+  get avatar() {
+    if (!this.profile || !this.profile.avatar) {
+      return 'http://placehold.jp/320x320.png';
+    }
+
+    return this.profile.avatar;
   }
 
   /** 会員メニューを開く */

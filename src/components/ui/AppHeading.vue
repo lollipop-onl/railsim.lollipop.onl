@@ -32,7 +32,7 @@ export default class AppHeading extends Vue {
     display: flex
     align-items: center
     justify-content: space-between
-    margin-bottom: $layout-margin-md
+    margin-bottom: $layout-margin-lg
 
   & > .title
     font-size: $font-lg
