@@ -46,6 +46,7 @@ const config: NuxtConfiguration = {
     '~/plugins/constants',
     '~/plugins/router-util/register',
     '~/plugins/firebase/register',
+    '~/plugins/filters/register',
     '~/plugins/libraries',
   ],
   router: {
@@ -62,7 +63,7 @@ const config: NuxtConfiguration = {
   },
   toast: {
     position: 'bottom-right',
-    duration: 5000
+    duration: 5000,
   },
   watch: ['~assets/styles/**/*.sass'],
 };

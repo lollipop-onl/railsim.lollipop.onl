@@ -26,6 +26,18 @@
             :max-length="120"
           />
         </AppFormRow>
+        <AppFormRow title="アバター画像">
+          <AppImageInput
+            v-model="avatarImage"
+            :initial-src="editingProfile.avatar"
+          />
+        </AppFormRow>
+        <AppFormRow title="ヒーロー画像">
+          <AppImageInput
+            v-model="heroImage"
+            :initial-src="editingProfile.hero"
+          />
+        </AppFormRow>
         <button
           class="button-base -primary -block"
           type="submit"
@@ -43,6 +55,7 @@ import AppHeading from '@/components/ui/AppHeading.vue';
 import AppForm from '@/components/ui/AppForm.vue';
 import AppFormRow from '@/components/ui/AppFormRow.vue';
 import AppInput from '@/components/ui/AppInput.vue';
+import AppImageInput from '@/components/ui/AppImageInput.vue';
 import { UserProfile } from '@/models';
 import { RootStore } from '@/types/vuex';
 
@@ -52,6 +65,7 @@ import { RootStore } from '@/types/vuex';
     AppForm,
     AppFormRow,
     AppInput,
+    AppImageInput,
   },
   layoutProps() {
     return {
@@ -71,17 +85,56 @@ export default class MypageProfilePage extends Vue {
   /** 編集中のプロフィール */
   editingProfile: UserProfile['Value'] = {};
 
+  /** アバター画像 */
+  avatarImage: File | null = null;
+
+  /** ヒーロー画像 */
+  heroImage: File | null = null;
+
   /**
    * フォームが送信されたときの処理
    */
   async onSubmit(): Promise<void> {
     try {
+      if (this.avatarImage) {
+        const avatarUrl = await this.uploadImage(this.avatarImage);
+
+        this.$set(this.editingProfile, 'avatar', avatarUrl);
+      }
+
+      if (this.heroImage) {
+        const heroUrl = await this.uploadImage(this.heroImage);
+
+        this.$set(this.editingProfile, 'hero', heroUrl);
+      }
+
       await this.$store.dispatch('auth/updateUserProfile', this.editingProfile);
 
       this.$toast.success('ユーザープロフィールを更新しました');
     } catch (err) {
       this.$toast.error('エラーが発生しました');
     }
+  }
+
+  /**
+   * アバター画像をアップロードする
+   */
+  async uploadImage(file: File): Promise<string> {
+    const { userId } = this.$store.state.auth;
+
+    if (!userId) {
+      throw new Error();
+    }
+
+    const uploadTask = this.$firebase.storage.upload(file, userId);
+
+    uploadTask.on('state_changed', ({ bytesTransferred, totalBytes }) => {
+      console.log(`${bytesTransferred} / ${totalBytes} (${bytesTransferred / totalBytes}%)`);
+    });
+
+    await uploadTask;
+
+    return uploadTask.snapshot.ref.getDownloadURL();
   }
 
   /**

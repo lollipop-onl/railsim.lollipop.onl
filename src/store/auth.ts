@@ -143,6 +143,8 @@ export const actions = {
 
     user.name = payload.name;
     user.bio = payload.bio;
+    user.avatar = payload.avatar;
+    user.hero = payload.hero;
 
     await user.update();
 

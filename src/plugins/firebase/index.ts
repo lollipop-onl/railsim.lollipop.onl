@@ -5,9 +5,11 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import FirebaseAuth from '@/plugins/firebase/auth';
+import FirebaseStorage from '@/plugins/firebase/storage';
 import { IFirebaseConfig, FirebaseEventName } from '@/types/firebase';
-import { UserProfile, UIDLink } from '@/models';
+import { UIDLink } from '@/models';
 import { initialize } from '@/models/util';
 
 class Firebase {
@@ -30,6 +32,7 @@ class Firebase {
       ? firebase.app()
       : firebase.initializeApp(config),
     public readonly auth = new FirebaseAuth(app),
+    public readonly storage = new FirebaseStorage(app),
   ) {
     this.initialize();
   }
