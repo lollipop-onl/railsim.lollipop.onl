@@ -65,8 +65,8 @@ export default class AppImageInput extends Vue {
   limit: number;
 
   /** 初期状態での画像ソース */
-  @Prop({ type: String, default: 'http://placehold.jp/320x320.png' })
-  initialSrc: string;
+  @Prop({ type: String })
+  initialSrc?: string;
 
   /** モデルを定義 */
   @Model('update', { type: File })

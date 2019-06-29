@@ -9,8 +9,11 @@ export class Plugin extends Base {
   /** プラグインの説明 */
   @property description: string;
 
-    /** 投稿者のユーザーID */
-    @property userId: string;
+  /** プラグインのバナー */
+  @property banner: string;
+
+  /** 投稿者のユーザーID */
+  @property userId: string;
 
   /** ダウンロードURL */
   @property downloadUrl: string;

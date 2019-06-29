@@ -1,14 +1,15 @@
 <template>
   <div v-if="plugin">
     <div class="plugin-carousel">
-      <PluginBannerCarousel />
+      <PluginBannerCarousel :plugin="plugin" />
     </div>
     <div class="plugin-details">
       <!-- eslint-disable -->
       <PluginIntroduction
         class="introduction"
         :title="plugin.name"
-      >{{ plugin.description }}</PluginIntroduction>
+        :content="plugin.description"
+      ></PluginIntroduction>
       <!-- eslint-enable -->
       <div class="information">
         <div class="plugin-download">
@@ -32,11 +33,13 @@
         />
       </div>
     </div>
+    <AppHeading>この作者のその他の投稿</AppHeading>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import AppHeading from '@/components/ui/AppHeading.vue';
 import PluginBannerCarousel from '@/components/page/plugin/PluginBannerCarousel.vue';
 import PluginIntroduction from '@/components/page/plugin/PluginIntroduction.vue';
 import PluginInformation from '@/components/page/plugin/PluginInformation.vue';
@@ -44,6 +47,7 @@ import { RootStore } from '@/types/vuex';
 
 @Component({
   components: {
+    AppHeading,
     PluginBannerCarousel,
     PluginIntroduction,
     PluginInformation,

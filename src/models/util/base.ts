@@ -382,7 +382,7 @@ export class Base implements Document {
     const serverTimestamp = firebase.firestore.Timestamp.fromDate(new Date());
 
     values.updatedAt = this.updatedAt || serverTimestamp;
-    values.createdAt = this.updatedAt || serverTimestamp;
+    values.createdAt = this.createdAt || serverTimestamp;
     values.id = this.id;
 
     return values;

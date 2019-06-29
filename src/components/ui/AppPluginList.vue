@@ -1,17 +1,19 @@
 <template>
   <ul class="plugin-list">
-    <template v-for="i in 6">
+    <template v-for="plugin in pluginList">
       <AppPluginListItem
-        :key="i"
+        :key="plugin.id"
         class="item"
+        :plugin="plugin"
       />
     </template>
   </ul>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import AppPluginListItem from '@/components/ui/AppPluginListItem.vue';
+import { Plugin } from '@/models';
 
 @Component({
   components: {
@@ -19,6 +21,8 @@ import AppPluginListItem from '@/components/ui/AppPluginListItem.vue';
   },
 })
 export default class AppPluginList extends Vue {
+  @Prop({ type: Array, default: () => [] })
+  pluginList: Plugin;
 }
 </script>
 

@@ -1,20 +1,20 @@
 <template>
   <li>
     <n-link
-      to="/plugin/dummy"
+      :to="`/plugin/${plugin.id}`"
       class="plugin-list-item"
     >
       <div class="eyecatch">
         <img
-          src="~assets/images/dev/banner.png"
+          :src="plugin.banner"
           class="image"
         >
       </div>
       <div class="title">
-        プラグイン名プラグイン名プラグイン名プラグイン名
+        {{ plugin.name }}
       </div>
       <div class="author">
-        by しもさんしぃ
+        by {{ plugin.userId }}
       </div>
       <div class="likes">
         <i class="icon ion-ios-thumbs-up" />
@@ -25,17 +25,25 @@
         1,025
       </div>
       <div class="datetime">
-        1 分以内
+        {{ plugin.updatedAt.toMillis() | dayjs }}
       </div>
     </n-link>
   </li>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { dayjs } from '@/plugins/filters';
+import { Plugin } from '@/models';
 
-@Component
+@Component({
+  filters: {
+    dayjs,
+  },
+})
 export default class AppPluginListItem extends Vue {
+  @Prop({ type: Object, required: true })
+  plugin: Plugin['Value'];
 }
 </script>
 
@@ -69,6 +77,7 @@ export default class AppPluginListItem extends Vue {
     width: 100%
     height: 100%
     object-fit: cover
+    border-radius: $layout-radius-md
 
   & > .title
     +text-ellipsis

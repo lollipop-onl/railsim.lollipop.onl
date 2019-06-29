@@ -40,14 +40,14 @@
         初回公開日時
       </dt>
       <dd class="value">
-        {{ plugin.createdAt.seconds | dayjs('YYYY/MM/DD HH:mm') }}
+        {{ plugin.createdAt.toMillis() | dayjs('YYYY/MM/DD HH:mm') }}
       </dd>
       <template v-if="isUpdated">
         <dt class="label">
           更新日時
         </dt>
         <dd class="value">
-          {{ plugin.updatedAt.seconds | dayjs('YYYY/MM/DD HH:mm') }}
+          {{ plugin.updatedAt.toMillis() | dayjs('YYYY/MM/DD HH:mm') }}
         </dd>
       </template>
     </dl>
@@ -84,6 +84,8 @@ export default class PluginInformation extends Vue {
     if (!updatedAt) {
       return false;
     }
+
+    console.log(this.plugin);
 
 
     return createdAt.seconds !== updatedAt.seconds;

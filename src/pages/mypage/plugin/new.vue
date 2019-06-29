@@ -45,15 +45,39 @@ export default class MypagePage extends Vue {
       return;
     }
 
+    const bannerUrl = await this.uploadImage(this.plugin.banner);
+
     const plugin = new Plugin();
 
     plugin.name = this.plugin.name;
     plugin.description = this.plugin.description;
     plugin.userId = userId;
+    plugin.banner = bannerUrl;
     plugin.downloadUrl = this.plugin.downloadUrl;
     plugin.category = this.plugin.category;
 
     await plugin.save();
+  }
+
+  /**
+   * アバター画像をアップロードする
+   */
+  async uploadImage(file: File): Promise<string> {
+    const { userId } = this.$store.state.auth;
+
+    if (!userId) {
+      throw new Error('ユーザーIDが見つかりませんでした。');
+    }
+
+    const uploadTask = this.$firebase.storage.upload(file, userId);
+
+    uploadTask.on('state_changed', ({ bytesTransferred, totalBytes }) => {
+      console.log(`${bytesTransferred} / ${totalBytes} (${bytesTransferred / totalBytes}%)`);
+    });
+
+    await uploadTask;
+
+    return uploadTask.snapshot.ref.getDownloadURL();
   }
 }
 </script>

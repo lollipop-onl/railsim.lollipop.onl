@@ -2,11 +2,11 @@
   <div class="plugin-carousel">
     <div class="main">
       <img
-        src="~assets/images/dev/banner.png"
+        :src="plugin.banner"
         class="image"
       >
     </div>
-    <ul class="other-images">
+    <!-- <ul class="other-images">
       <li class="item">
         <img
           src="~assets/images/dev/banner.png"
@@ -43,15 +43,19 @@
           class="image"
         >
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { Plugin } from '@/models';
 
 @Component
 export default class PluginBannerCarousel extends Vue {
+  /** プラグイン */
+  @Prop({ type: Object, required: true })
+  plugin: Plugin['Value'];
 }
 </script>
 
@@ -67,7 +71,8 @@ export default class PluginBannerCarousel extends Vue {
   & > .main
     position: relative
     flex-shrink: 0
-    width: 780px
+    // width: 780px
+    width: 100%
 
     @media (max-width: 1200px)
       width: 100%

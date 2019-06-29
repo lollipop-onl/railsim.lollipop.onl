@@ -22,6 +22,11 @@
           :error="errors.first('description')"
         />
       </AppFormRow>
+      <AppFormRow title="画像">
+        <AppImageInput
+          v-model="localValue.banner"
+        />
+      </AppFormRow>
       <AppFormRow title="ダウンロードURL">
         <AppInput
           v-model="localValue.downloadUrl"

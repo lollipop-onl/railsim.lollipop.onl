@@ -4,7 +4,7 @@
       {{ title }}
     </h1>
     <!-- eslint-disable-next-line -->
-    <div class="content"><slot /></div>
+    <div class="content">{{content}}</div>
   </section>
 </template>
 
@@ -15,6 +15,10 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
 export default class PluginIntroduction extends Vue {
   /** プラグイン名 */
   @Prop({ type: String, required: true }) title: string;
+
+  /** 本文 */
+  @Prop({ type: String, required: true })
+  content: string;
 }
 </script>
 
