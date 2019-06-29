@@ -41,7 +41,7 @@ const config: NuxtConfiguration = {
   },
   extensions: ['js', 'ts'],
   mode: 'spa',
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/toast'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/toast', '@nuxtjs/pwa'],
   plugins: [
     '~/plugins/constants',
     '~/plugins/router-util/register',
@@ -66,6 +66,10 @@ const config: NuxtConfiguration = {
     duration: 5000,
   },
   watch: ['~assets/styles/**/*.sass'],
+  workbox: {
+    skipWaiting: true,
+    clientsClaim: true,
+  },
 };
 
 export default config;
