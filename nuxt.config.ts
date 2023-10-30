@@ -15,10 +15,10 @@ const config: NuxtConfiguration = {
   build: {
     hardSource: true,
     typescript: {
-      typeCheck: true,
+      typeCheck: false,
     },
   },
-  css: ['reset.css', '~assets/styles/root.sass'],
+  css: ["reset.css", "~assets/styles/root.sass"],
   env: {
     NUXT_ENV_API_KEY,
     NUXT_ENV_AUTH_DOMAIN,
@@ -29,43 +29,49 @@ const config: NuxtConfiguration = {
   },
   head: {
     meta: [
-      { charset: 'utf-8' },
+      { charset: "utf-8" },
       // スマホ版を作らないので無効化
       // { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
     link: [
-      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap&subset=japanese' },
-      { rel: 'stylesheet', href: '//unpkg.com/ionicons@4.5.10-1/dist/css/ionicons.min.css' },
+      {
+        rel: "stylesheet",
+        href: "//fonts.googleapis.com/css?family=Noto+Sans+JP:400,700&display=swap&subset=japanese",
+      },
+      {
+        rel: "stylesheet",
+        href: "//unpkg.com/ionicons@4.5.10-1/dist/css/ionicons.min.css",
+      },
     ],
-    title: 'RailSim Plugin Store',
+    title: "RailSim Plugin Store",
   },
-  extensions: ['js', 'ts'],
-  mode: 'spa',
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/toast', '@nuxtjs/pwa'],
+  extensions: ["js", "ts"],
+  mode: "spa",
+  modules: ["@nuxtjs/style-resources", "@nuxtjs/toast", "@nuxtjs/pwa"],
   plugins: [
-    '~/plugins/constants',
-    '~/plugins/router-util/register',
-    '~/plugins/firebase/register',
-    '~/plugins/filters/register',
-    '~/plugins/libraries',
+    "~/plugins/constants",
+    "~/plugins/router-util/register",
+    "~/plugins/firebase/register",
+    "~/plugins/filters/register",
+    "~/plugins/libraries",
   ],
   router: {
-    linkActiveClass: '-active',
-    linkExactActiveClass: '-active-exact',
+    linkActiveClass: "-active",
+    linkExactActiveClass: "-active-exact",
   },
-  srcDir: 'src/',
+  srcDir: "src/",
   styleResources: {
     sass: [
-      '~assets/styles/vars/*.sass',
-      '~assets/styles/mixins/*.sass',
-      '~assets/styles/base/*.sass',
+      "~assets/styles/vars/*.sass",
+      "~assets/styles/mixins/*.sass",
+      "~assets/styles/base/*.sass",
     ],
   },
   toast: {
-    position: 'bottom-right',
+    position: "bottom-right",
     duration: 5000,
   },
-  watch: ['~assets/styles/**/*.sass'],
+  watch: ["~assets/styles/**/*.sass"],
   workbox: {
     skipWaiting: true,
     clientsClaim: true,

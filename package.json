@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nuxt dev",
+    "build": "nuxt build",
     "lint": "eslint --ext .ts,.vue ."
   },
   "style": {
