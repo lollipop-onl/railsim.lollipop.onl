@@ -9,6 +9,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '10'
+      - uses: actions/checkout@v4
       - run: npm ci
       - run: npm build
       - uses: actions/upload-artifact@v3
