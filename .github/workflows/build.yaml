@@ -11,7 +11,7 @@ jobs:
           node-version: '10'
       - uses: actions/checkout@v4
       - run: npm ci
-      - run: npm build
+      - run: npm run build
       - uses: actions/upload-artifact@v3
         with:
           name: railsim-lollipop-onl
